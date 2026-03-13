@@ -1,0 +1,45 @@
+/* WordPress Editor Styles for AquaPro */
+body.wp-editor {
+  font-family: 'Open Sans', 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #374151;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #0D1B2A;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.15rem; }
+
+p { margin-bottom: 20px; }
+
+a { color: #0077B6; }
+
+ul, ol { padding-left: 24px; margin-bottom: 20px; }
+li { margin-bottom: 8px; }
+
+blockquote {
+  border-left: 4px solid #0077B6;
+  padding: 16px 20px;
+  background: #F3F4F6;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: #6B7280;
+}
+
+img { max-width: 100%; height: auto; border-radius: 12px; }
+
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #D1D5DB; padding: 10px 14px; text-align: left; }
+th { background: #F3F4F6; font-weight: 700; }

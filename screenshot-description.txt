@@ -1,0 +1,17 @@
+AquaPro Pool Cleaning Theme - Screenshot
+
+Replace this file with a 1200x900px PNG screenshot of your homepage.
+
+Recommended dimensions: 1200 x 900 pixels
+File name: screenshot.png
+Location: Theme root directory (wp-content/themes/aquapro/screenshot.png)
+
+The screenshot should show:
+- The header with logo and navigation
+- The hero section with headline and quote form
+- Trust indicators bar
+
+You can take a screenshot using browser dev tools or a tool like:
+- Chrome DevTools → Device Toolbar → Set viewport to 1440px → Screenshot
+- screencapture.com
+- Browser plugin: GoFullPage

@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Block WordPress admin
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+# Block search result pages (thin content)
+Disallow: /?s=
+Disallow: /search/
+
+# Block unnecessary WordPress files
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+
+# Sitemap location (update with your domain)
+Sitemap: https://www.williamspoolcare.com/sitemap.xml
+Sitemap: https://www.williamspoolcare.com/sitemap_index.xml
+
+# Crawl-delay for bots
+Crawl-delay: 1
