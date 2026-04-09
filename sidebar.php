@@ -5,8 +5,8 @@
  * @package AquaPro
  */
 
-$phone      = get_theme_mod( 'aquapro_phone', '(916) 555-0192' );
-$phone_link = get_theme_mod( 'aquapro_phone_link', '19165550192' );
+$phone      = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
+$phone_link = get_theme_mod( 'aquapro_phone_link', '19165325561' );
 ?>
 
 <!-- CTA Widget -->

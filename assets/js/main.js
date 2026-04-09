@@ -214,7 +214,7 @@
 					}
 				} )
 				.catch( function () {
-					showFormError( 'Network error. Please call us at ' + ( typeof aquaproData !== 'undefined' ? aquaproData.phone : '(916) 555-0192' ) );
+					showFormError( 'Network error. Please call us at ' + ( typeof aquaproData !== 'undefined' ? aquaproData.phone : '(916) 532-5561' ) );
 				} )
 				.finally( function () {
 					quoteSubmit.disabled = false;

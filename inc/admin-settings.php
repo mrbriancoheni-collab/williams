@@ -27,7 +27,7 @@ function aquapro_dashboard_widget() {
 add_action( 'wp_dashboard_setup', 'aquapro_dashboard_widget' );
 
 function aquapro_dashboard_widget_cb() {
-	$phone = get_theme_mod( 'aquapro_phone', '(916) 555-0192' );
+	$phone = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
 	?>
 	<div style="font-family:sans-serif;">
 		<p>Welcome to your <strong>AquaPro Pool Cleaning</strong> website! Here's your quick-start checklist:</p>

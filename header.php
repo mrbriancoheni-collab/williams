@@ -11,8 +11,8 @@
 <?php wp_body_open(); ?>
 
 <?php
-$phone      = get_theme_mod( 'aquapro_phone', '(916) 555-0192' );
-$phone_link = get_theme_mod( 'aquapro_phone_link', '19165550192' );
+$phone      = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
+$phone_link = get_theme_mod( 'aquapro_phone_link', '19165325561' );
 $notif_show = get_theme_mod( 'aquapro_notif_show', '1' );
 $notif_text = get_theme_mod( 'aquapro_notif_text', '🌊 <strong>New Client Special:</strong> Sign up for weekly service and get your first cleaning FREE! Call now to claim your spot.' );
 ?>
@@ -38,9 +38,9 @@ $notif_text = get_theme_mod( 'aquapro_notif_text', '🌊 <strong>New Client Spec
 						<i class="fas fa-phone" aria-hidden="true"></i>
 						<?php echo esc_html( $phone ); ?>
 					</a>
-					<a href="mailto:<?php echo esc_attr( get_theme_mod( 'aquapro_email', 'info@williamspoolcare.com' ) ); ?>">
+					<a href="mailto:<?php echo esc_attr( get_theme_mod( 'aquapro_email', 'williamspoolscare@gmail.com' ) ); ?>">
 						<i class="fas fa-envelope" aria-hidden="true"></i>
-						<?php echo esc_html( get_theme_mod( 'aquapro_email', 'info@williamspoolcare.com' ) ); ?>
+						<?php echo esc_html( get_theme_mod( 'aquapro_email', 'williamspoolscare@gmail.com' ) ); ?>
 					</a>
 					<span>
 						<i class="fas fa-clock" aria-hidden="true"></i>
@@ -79,17 +79,19 @@ $notif_text = get_theme_mod( 'aquapro_notif_text', '🌊 <strong>New Client Spec
 			<div class="header-inner">
 
 				<!-- Logo -->
+				<?php if ( has_custom_logo() ) : ?>
+				<div class="site-logo">
+					<?php the_custom_logo(); ?>
+				</div>
+				<?php else : ?>
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" rel="home" aria-label="<?php bloginfo( 'name' ); ?> - Home">
-					<?php if ( has_custom_logo() ) : ?>
-						<?php the_custom_logo(); ?>
-					<?php else : ?>
-						<div class="logo-icon" aria-hidden="true">🏊</div>
-						<div class="logo-text">
-							<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
-							<span class="logo-tagline"><?php _e( 'Pool Cleaning Experts', 'aquapro' ); ?></span>
-						</div>
-					<?php endif; ?>
+					<div class="logo-icon" aria-hidden="true">🏊</div>
+					<div class="logo-text">
+						<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
+						<span class="logo-tagline"><?php _e( 'Pool Cleaning Experts', 'aquapro' ); ?></span>
+					</div>
 				</a>
+				<?php endif; ?>
 
 				<!-- Primary Navigation -->
 				<nav class="main-nav" id="mainNav" role="navigation" aria-label="<?php esc_attr_e( 'Primary Navigation', 'aquapro' ); ?>">
