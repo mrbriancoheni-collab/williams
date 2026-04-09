@@ -731,3 +731,76 @@ add_filter( 'excerpt_more', fn() => '...' );
 add_filter( 'the_content', function( $content ) {
 	return str_replace( 'target="_blank"', 'target="_blank" rel="noopener noreferrer"', $content );
 } );
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+function aquapro_fallback_menu() {
+	$pages = array(
+		'Home'          => home_url( '/' ),
+		'Services'      => home_url( '/services/' ),
+		'About'         => home_url( '/about/' ),
+		'Service Areas' => home_url( '/service-areas/' ),
+		'Blog'          => home_url( '/blog/' ),
+		'Contact'       => home_url( '/contact/' ),
+	);
+
+	echo '<ul>';
+	foreach ( $pages as $label => $url ) {
+		echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a></li>';
+	}
+	echo '</ul>';
+}
+
+if ( ! class_exists( 'Aquapro_Nav_Walker' ) ) :
+class Aquapro_Nav_Walker extends Walker_Nav_Menu {
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		$output .= '<ul class="dropdown-menu">';
+	}
+
+	public function end_lvl( &$output, $depth = 0, $args = null ) {
+		$output .= '</ul>';
+	}
+
+	public function start_el( &$output, $data_object, $depth = 0, $args = null, $current_object_id = 0 ) {
+		$item    = $data_object;
+		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
+		$has_children = in_array( 'menu-item-has-children', $classes );
+
+		$class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args ) );
+		if ( $has_children ) {
+			$class_names .= ' has-dropdown';
+		}
+
+		$output .= '<li class="' . esc_attr( $class_names ) . '">';
+
+		$atts = array(
+			'href'   => $item->url,
+			'title'  => $item->title,
+			'target' => $item->target,
+			'rel'    => $item->xfn,
+		);
+
+		$atts = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args );
+
+		$attributes = '';
+		foreach ( $atts as $attr => $value ) {
+			if ( ! empty( $value ) ) {
+				$attributes .= ' ' . esc_attr( $attr ) . '="' . esc_attr( $value ) . '"';
+			}
+		}
+
+		$output .= '<a' . $attributes . '>';
+		$output .= apply_filters( 'the_title', $item->title, $item->ID );
+		if ( $has_children && $depth === 0 ) {
+			$output .= ' <i class="fas fa-chevron-down" style="font-size:0.6rem;margin-left:4px;" aria-hidden="true"></i>';
+		}
+		$output .= '</a>';
+	}
+
+	public function end_el( &$output, $data_object, $depth = 0, $args = null ) {
+		$output .= '</li>';
+	}
+}
+endif;
