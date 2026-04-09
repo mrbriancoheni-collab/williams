@@ -7,8 +7,8 @@
 
 get_header();
 
-$phone      = get_theme_mod( 'aquapro_phone', '(916) 555-0192' );
-$phone_link = get_theme_mod( 'aquapro_phone_link', '19165550192' );
+$phone      = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
+$phone_link = get_theme_mod( 'aquapro_phone_link', '19165325561' );
 $city       = get_theme_mod( 'aquapro_city', 'Fair Oaks' );
 $icon       = get_post_meta( get_the_ID(), '_service_icon', true ) ?: '🏊';
 $features   = get_post_meta( get_the_ID(), '_service_features', true ) ?: array();
