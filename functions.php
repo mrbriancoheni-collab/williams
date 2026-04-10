@@ -13,6 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Load admin settings & meta boxes
 require_once get_template_directory() . '/inc/admin-settings.php';
 
+// Localized service page data & setup
+require_once get_template_directory() . '/inc/location-data.php';
+require_once get_template_directory() . '/inc/location-setup.php';
+
 // ============================================================
 // THEME SETUP
 // ============================================================
