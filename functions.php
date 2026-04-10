@@ -804,3 +804,23 @@ class Aquapro_Nav_Walker extends Walker_Nav_Menu {
 	}
 }
 endif;
+
+// Inject Blog into the primary nav if it isn't already there
+add_filter( 'wp_nav_menu_items', function( $items, $args ) {
+	if ( ! isset( $args->theme_location ) || $args->theme_location !== 'primary' ) {
+		return $items;
+	}
+	$blog_url = esc_url( home_url( '/blog/' ) );
+	if ( strpos( $items, $blog_url ) !== false ) {
+		return $items; // already in menu
+	}
+	$blog_item = '<li class="menu-item"><a href="' . $blog_url . '">' . esc_html__( 'Blog', 'aquapro' ) . '</a></li>';
+	// Insert before the last <li> (second-to-last position, before Contact)
+	$pos = strrpos( $items, '<li' );
+	if ( $pos !== false ) {
+		$items = substr( $items, 0, $pos ) . $blog_item . substr( $items, $pos );
+	} else {
+		$items .= $blog_item;
+	}
+	return $items;
+}, 10, 2 );
