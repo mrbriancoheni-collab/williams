@@ -14,11 +14,13 @@
 
 	function handleHeaderScroll() {
 		if ( ! header ) return;
-		const notifBar   = document.getElementById( 'notificationBar' );
-		const notifHeight = ( notifBar && window.scrollY < notifBar.offsetHeight )
-			? notifBar.offsetHeight - window.scrollY
-			: 0;
-		header.style.top = notifHeight + 'px';
+		const notifBar = document.getElementById( 'notificationBar' );
+		if ( notifBar ) {
+			const bottom = notifBar.getBoundingClientRect().bottom;
+			header.style.top = Math.max( 0, bottom ) + 'px';
+		} else {
+			header.style.top = '0';
+		}
 
 		if ( window.scrollY > scrollThreshold ) {
 			header.classList.remove( 'transparent' );
