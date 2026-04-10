@@ -2178,6 +2178,8 @@ select.form-control { cursor: pointer; }
 
   .header-top-bar { display: none; }
 
+  .mobile-nav-logo { display: none; }
+
   .main-nav { display: none; }
   .main-nav.open {
     display: flex;
@@ -2191,6 +2193,27 @@ select.form-control { cursor: pointer; }
     justify-content: center;
     align-items: center;
     z-index: 999;
+  }
+
+  .main-nav.open .mobile-nav-logo {
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .main-nav.open .mobile-nav-logo img.custom-logo {
+    height: 50px !important;
+    width: auto !important;
+    max-width: 180px !important;
+  }
+
+  .main-nav.open .mobile-nav-logo .logo-name {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
   }
 
   .main-nav.open ul {

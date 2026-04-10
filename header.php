@@ -95,6 +95,13 @@ $notif_text = get_theme_mod( 'aquapro_notif_text', '🌊 <strong>New Client Spec
 
 				<!-- Primary Navigation -->
 				<nav class="main-nav" id="mainNav" role="navigation" aria-label="<?php esc_attr_e( 'Primary Navigation', 'aquapro' ); ?>">
+					<div class="mobile-nav-logo" aria-hidden="true">
+						<?php if ( has_custom_logo() ) : ?>
+							<?php the_custom_logo(); ?>
+						<?php else : ?>
+							<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
+						<?php endif; ?>
+					</div>
 					<?php
 					wp_nav_menu( array(
 						'theme_location'  => 'primary',
