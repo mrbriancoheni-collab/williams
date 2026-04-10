@@ -1896,6 +1896,9 @@ select.form-control { cursor: pointer; }
 
 .back-to-top:hover { transform: translateY(-3px); }
 
+/* Mobile nav logo: hidden by default, shown only in open mobile overlay */
+.mobile-nav-logo { display: none; }
+
 /* =============================================
    NOTIFICATION BAR
    ============================================= */
@@ -2177,8 +2180,6 @@ select.form-control { cursor: pointer; }
   .areas-grid { grid-template-columns: repeat(3, 1fr); }
 
   .header-top-bar { display: none; }
-
-  .mobile-nav-logo { display: none; }
 
   .main-nav { display: none; }
   .main-nav.open {
