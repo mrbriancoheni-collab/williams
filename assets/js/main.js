@@ -15,11 +15,14 @@
 	function handleHeaderScroll() {
 		if ( ! header ) return;
 		const notifBar = document.getElementById( 'notificationBar' );
+		const adminBar = document.getElementById( 'wpadminbar' );
+		const minTop   = adminBar ? adminBar.offsetHeight : 0;
+
 		if ( notifBar ) {
 			const bottom = notifBar.getBoundingClientRect().bottom;
-			header.style.top = Math.max( 0, bottom ) + 'px';
+			header.style.top = Math.max( minTop, bottom ) + 'px';
 		} else {
-			header.style.top = '0';
+			header.style.top = minTop + 'px';
 		}
 
 		if ( window.scrollY > scrollThreshold ) {
