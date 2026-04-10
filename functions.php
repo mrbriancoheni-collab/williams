@@ -102,7 +102,7 @@ function aquapro_scripts() {
 		'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
 		'nonce'     => wp_create_nonce( 'aquapro_nonce' ),
 		'siteUrl'   => get_site_url(),
-		'phone'     => get_theme_mod( 'aquapro_phone', '(555) 123-4567' ),
+		'phone'     => get_theme_mod( 'aquapro_phone', '(916) 532-5561' ),
 	) );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -253,9 +253,9 @@ function aquapro_customize_register( $wp_customize ) {
 	) );
 
 	$contact_fields = array(
-		'aquapro_phone'        => array( __( 'Phone Number', 'aquapro' ), '(555) 123-4567' ),
-		'aquapro_phone_link'   => array( __( 'Phone (link format)', 'aquapro' ), '15551234567' ),
-		'aquapro_email'        => array( __( 'Email Address', 'aquapro' ), 'info@yourpoolco.com' ),
+		'aquapro_phone'        => array( __( 'Phone Number', 'aquapro' ), '(916) 532-5561' ),
+		'aquapro_phone_link'   => array( __( 'Phone (link format)', 'aquapro' ), '19165325561' ),
+		'aquapro_email'        => array( __( 'Email Address', 'aquapro' ), 'williamspoolscare@gmail.com' ),
 		'aquapro_address'      => array( __( 'Business Address', 'aquapro' ), '123 Pool Lane, Your City, ST 00000' ),
 		'aquapro_hours'        => array( __( 'Business Hours', 'aquapro' ), 'Mon–Fri: 7AM–6PM | Sat: 8AM–4PM' ),
 		'aquapro_license'      => array( __( 'License Number', 'aquapro' ), 'CPO-123456' ),
@@ -384,8 +384,8 @@ add_action( 'customize_register', 'aquapro_customize_register' );
 // ============================================================
 
 function aquapro_head_seo() {
-	$phone       = get_theme_mod( 'aquapro_phone', '(555) 123-4567' );
-	$email       = get_theme_mod( 'aquapro_email', 'info@yourpoolco.com' );
+	$phone       = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
+	$email       = get_theme_mod( 'aquapro_email', 'williamspoolscare@gmail.com' );
 	$address     = get_theme_mod( 'aquapro_address', '123 Pool Lane, Phoenix, AZ 85001' );
 	$city        = get_theme_mod( 'aquapro_city', 'Phoenix' );
 	$state       = get_theme_mod( 'aquapro_state', 'Arizona' );
@@ -621,7 +621,7 @@ function aquapro_handle_quote_form() {
 	$customer_subject = sprintf( 'Thanks for contacting %s!', $site_name );
 	$customer_body    = sprintf(
 		"Hi %s,\n\nThank you for reaching out! We received your quote request and will contact you within 2 business hours.\n\nYour request:\n- Service: %s\n- Pool Size: %s\n\nQuestions? Call us: %s\n\n– The %s Team",
-		$name, $service, $size, get_theme_mod( 'aquapro_phone', '(555) 123-4567' ), $site_name
+		$name, $service, $size, get_theme_mod( 'aquapro_phone', '(916) 532-5561' ), $site_name
 	);
 
 	wp_mail( $email, $customer_subject, $customer_body, array( 'Content-Type: text/plain; charset=UTF-8' ) );
