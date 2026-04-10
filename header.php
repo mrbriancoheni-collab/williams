@@ -23,7 +23,7 @@ $notif_text = get_theme_mod( 'aquapro_notif_text', '🌊 <strong>New Client Spec
 <?php if ( $notif_show ) : ?>
 <div class="notification-bar" id="notificationBar" role="banner">
 	<p><?php echo wp_kses_post( $notif_text ); ?></p>
-	<button class="notification-close" aria-label="<?php esc_attr_e( 'Close notification', 'aquapro' ); ?>" onclick="document.getElementById('notificationBar').remove()">✕</button>
+	<button class="notification-close" aria-label="<?php esc_attr_e( 'Close notification', 'aquapro' ); ?>" onclick="this.parentElement.remove(); handleHeaderScroll();">✕</button>
 </div>
 <?php endif; ?>
 

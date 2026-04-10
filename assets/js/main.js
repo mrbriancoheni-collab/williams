@@ -14,6 +14,12 @@
 
 	function handleHeaderScroll() {
 		if ( ! header ) return;
+		const notifBar   = document.getElementById( 'notificationBar' );
+		const notifHeight = ( notifBar && window.scrollY < notifBar.offsetHeight )
+			? notifBar.offsetHeight - window.scrollY
+			: 0;
+		header.style.top = notifHeight + 'px';
+
 		if ( window.scrollY > scrollThreshold ) {
 			header.classList.remove( 'transparent' );
 			header.classList.add( 'scrolled' );
@@ -23,6 +29,7 @@
 		}
 	}
 
+	window.handleHeaderScroll = handleHeaderScroll;
 	window.addEventListener( 'scroll', handleHeaderScroll, { passive: true } );
 	handleHeaderScroll();
 
@@ -327,19 +334,6 @@
 		} );
 	}
 
-	// =============================================
-	// NOTIFICATION BAR HEIGHT OFFSET
-	// =============================================
-	function setHeaderOffset() {
-		const notifBar = document.getElementById( 'notificationBar' );
-		if ( header && notifBar ) {
-			header.style.top = notifBar.offsetHeight + 'px';
-		} else if ( header ) {
-			header.style.top = '0';
-		}
-	}
-	setHeaderOffset();
-	window.addEventListener( 'resize', setHeaderOffset );
 
 	// =============================================
 	// TESTIMONIAL SLIDER (simple auto-scroll hint)
