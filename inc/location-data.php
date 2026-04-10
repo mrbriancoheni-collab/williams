@@ -103,7 +103,7 @@ function aquapro_get_services() {
 				'Equipment inspection each visit',
 			),
 		),
-		'equipment-repair' => array(
+		'pool-equipment-repair' => array(
 			'name'        => 'Equipment Repair',
 			'title'       => 'Pool Equipment Repair & Service',
 			'icon'        => '🔧',
