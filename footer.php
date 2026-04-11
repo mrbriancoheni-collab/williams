@@ -25,12 +25,16 @@ $year       = date( 'Y' );
 
 				<!-- Brand Column -->
 				<div class="footer-brand">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" rel="home">
-						<div class="logo-icon" aria-hidden="true">🏊</div>
-						<div class="logo-text">
-							<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
-							<span class="logo-tagline"><?php _e( 'Pool Cleaning Experts', 'aquapro' ); ?></span>
-						</div>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-logo" rel="home" aria-label="<?php bloginfo( 'name' ); ?> – <?php esc_attr_e( 'Home', 'aquapro' ); ?>">
+						<?php if ( has_custom_logo() ) : ?>
+							<?php the_custom_logo(); ?>
+						<?php else : ?>
+							<div class="logo-icon" aria-hidden="true">🏊</div>
+							<div class="logo-text">
+								<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
+								<span class="logo-tagline"><?php _e( 'Pool Cleaning Experts', 'aquapro' ); ?></span>
+							</div>
+						<?php endif; ?>
 					</a>
 
 					<p class="footer-brand-desc">
