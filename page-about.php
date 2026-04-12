@@ -181,4 +181,6 @@ if ( $team_query->have_posts() ) : ?>
 	</div>
 </section>
 
+<?php require get_template_directory() . '/inc/service-areas-section.php'; ?>
+
 <?php get_footer(); ?>
