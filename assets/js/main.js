@@ -170,12 +170,27 @@
 
 	// =============================================
 	// QUOTE FORM AJAX SUBMISSION
+	// Works for all forms with id="quoteForm" regardless of page template.
+	// Status div and submit button are queried from within the form itself.
 	// =============================================
-	const quoteForm   = document.getElementById( 'quoteForm' );
-	const quoteMsg    = document.getElementById( 'quoteFormMsg' );
-	const quoteSubmit = document.getElementById( 'quoteSubmitBtn' );
+	const quoteForm = document.getElementById( 'quoteForm' );
 
 	if ( quoteForm ) {
+		const quoteMsg    = quoteForm.querySelector( '[role="alert"]' );
+		const quoteSubmit = quoteForm.querySelector( 'button[type="submit"]' );
+
+		function showFormError( msg ) {
+			if ( ! quoteMsg ) return;
+			quoteMsg.style.display     = 'block';
+			quoteMsg.style.background  = '#fee2e2';
+			quoteMsg.style.color       = '#991b1b';
+			quoteMsg.style.padding     = '16px 20px';
+			quoteMsg.style.borderRadius = '10px';
+			quoteMsg.style.marginBottom = '16px';
+			quoteMsg.style.fontWeight  = '600';
+			quoteMsg.textContent       = '✕ ' + msg;
+		}
+
 		quoteForm.addEventListener( 'submit', function ( e ) {
 			e.preventDefault();
 
@@ -185,8 +200,10 @@
 			}
 
 			// Loading state
-			quoteSubmit.disabled = true;
-			quoteSubmit.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Sending...';
+			if ( quoteSubmit ) {
+				quoteSubmit.disabled = true;
+				quoteSubmit.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Sending...';
+			}
 
 			const formData = new FormData( quoteForm );
 			formData.append( 'action', 'aquapro_quote' );
@@ -201,21 +218,23 @@
 				} )
 				.then( function ( data ) {
 					if ( data.success ) {
-						quoteMsg.style.display    = 'block';
-						quoteMsg.style.background  = '#d1fae5';
-						quoteMsg.style.color       = '#065f46';
-						quoteMsg.style.padding     = '16px 20px';
-						quoteMsg.style.borderRadius = '10px';
-						quoteMsg.style.marginBottom = '16px';
-						quoteMsg.style.fontWeight  = '600';
-						quoteMsg.textContent       = '✓ ' + data.data.message;
+						if ( quoteMsg ) {
+							quoteMsg.style.display     = 'block';
+							quoteMsg.style.background  = '#d1fae5';
+							quoteMsg.style.color       = '#065f46';
+							quoteMsg.style.padding     = '16px 20px';
+							quoteMsg.style.borderRadius = '10px';
+							quoteMsg.style.marginBottom = '16px';
+							quoteMsg.style.fontWeight  = '600';
+							quoteMsg.textContent       = '✓ ' + data.data.message;
+						}
 						quoteForm.reset();
 
 						// Track conversion
 						if ( typeof gtag !== 'undefined' ) {
 							gtag( 'event', 'quote_form_submit', {
 								event_category: 'Lead',
-								event_label: 'Hero Quote Form',
+								event_label: 'Quote Form',
 							} );
 						}
 						if ( typeof fbq !== 'undefined' ) {
@@ -229,22 +248,12 @@
 					showFormError( 'Network error. Please call us at ' + ( typeof aquaproData !== 'undefined' ? aquaproData.phone : '(916) 532-5561' ) );
 				} )
 				.finally( function () {
-					quoteSubmit.disabled = false;
-					quoteSubmit.innerHTML = '<i class="fas fa-paper-plane" aria-hidden="true"></i> Send My Free Quote Request';
+					if ( quoteSubmit ) {
+						quoteSubmit.disabled = false;
+						quoteSubmit.innerHTML = '<i class="fas fa-paper-plane" aria-hidden="true"></i> Send My Free Quote Request';
+					}
 				} );
 		} );
-	}
-
-	function showFormError( msg ) {
-		if ( ! quoteMsg ) return;
-		quoteMsg.style.display    = 'block';
-		quoteMsg.style.background  = '#fee2e2';
-		quoteMsg.style.color       = '#991b1b';
-		quoteMsg.style.padding     = '16px 20px';
-		quoteMsg.style.borderRadius = '10px';
-		quoteMsg.style.marginBottom = '16px';
-		quoteMsg.style.fontWeight  = '600';
-		quoteMsg.textContent       = '✕ ' + msg;
 	}
 
 	// =============================================
