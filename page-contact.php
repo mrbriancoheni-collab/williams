@@ -240,4 +240,6 @@ $city       = get_theme_mod( 'aquapro_city', 'Fair Oaks' );
 })();
 </script>
 
+<?php require get_template_directory() . '/inc/service-areas-section.php'; ?>
+
 <?php get_footer(); ?>

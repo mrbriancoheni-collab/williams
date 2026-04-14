@@ -200,23 +200,10 @@ echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESC
 	</div>
 </section>
 
-<!-- ── ALL SERVICE AREAS ──────────────────────────────────────── -->
-<section class="section-padding">
-	<div class="container">
-		<div class="section-header center">
-			<h2 class="section-title"><?php esc_html_e( 'All Service Areas', 'aquapro' ); ?></h2>
-		</div>
-		<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:32px;">
-			<?php foreach ( $all_locations as $loc_slug => $loc ) : ?>
-			<a href="<?php echo esc_url( aquapro_location_url( $loc_slug ) ); ?>"
-			   style="display:block;background:var(--color-gray-100);border-radius:var(--radius-sm);padding:14px 16px;text-decoration:none;color:var(--color-dark);font-weight:500;font-size:0.9rem;border:1px solid var(--color-gray-200);transition:all 0.2s ease;">
-				<i class="fas fa-map-marker-alt" style="color:var(--color-primary);margin-right:6px;" aria-hidden="true"></i>
-				<?php echo esc_html( $loc['name'] ); ?>
-			</a>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</section>
+<?php
+$aquapro_current_city = $city_slug;
+require get_template_directory() . '/inc/service-areas-section.php';
+?>
 
 <!-- ── QUOTE FORM ──────────────────────────────────────────────── -->
 <section class="section-padding" style="background:linear-gradient(135deg,var(--color-primary-dark),var(--color-primary));" id="quote-form">

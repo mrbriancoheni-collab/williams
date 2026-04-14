@@ -113,4 +113,6 @@ $price      = get_post_meta( get_the_ID(), '_service_price', true ) ?: '';
 	</div>
 </section>
 
+<?php require get_template_directory() . '/inc/service-areas-section.php'; ?>
+
 <?php get_footer(); ?>
