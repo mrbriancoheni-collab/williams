@@ -259,7 +259,7 @@ function aquapro_customize_register( $wp_customize ) {
 	$contact_fields = array(
 		'aquapro_phone'        => array( __( 'Phone Number', 'aquapro' ), '(916) 532-5561' ),
 		'aquapro_phone_link'   => array( __( 'Phone (link format)', 'aquapro' ), '19165325561' ),
-		'aquapro_email'        => array( __( 'Email Address', 'aquapro' ), 'williamspoolscare@gmail.com' ),
+		'aquapro_email'        => array( __( 'Email Address', 'aquapro' ), 'williamspoolcare@gmail.com' ),
 		'aquapro_address'      => array( __( 'Business Address', 'aquapro' ), '123 Pool Lane, Your City, ST 00000' ),
 		'aquapro_hours'        => array( __( 'Business Hours', 'aquapro' ), 'Mon–Fri: 7AM–6PM | Sat: 8AM–4PM' ),
 		'aquapro_license'      => array( __( 'License Number', 'aquapro' ), 'CPO-123456' ),
@@ -389,7 +389,7 @@ add_action( 'customize_register', 'aquapro_customize_register' );
 
 function aquapro_head_seo() {
 	$phone       = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
-	$email       = get_theme_mod( 'aquapro_email', 'williamspoolscare@gmail.com' );
+	$email       = get_theme_mod( 'aquapro_email', 'williamspoolcare@gmail.com' );
 	$address     = get_theme_mod( 'aquapro_address', '123 Pool Lane, Phoenix, AZ 85001' );
 	$city        = get_theme_mod( 'aquapro_city', 'Phoenix' );
 	$state       = get_theme_mod( 'aquapro_state', 'Arizona' );

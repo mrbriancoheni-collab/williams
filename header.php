@@ -38,9 +38,9 @@ $notif_text = get_theme_mod( 'aquapro_notif_text', '🌊 <strong>New Client Spec
 						<i class="fas fa-phone" aria-hidden="true"></i>
 						<?php echo esc_html( $phone ); ?>
 					</a>
-					<a href="mailto:<?php echo esc_attr( get_theme_mod( 'aquapro_email', 'williamspoolscare@gmail.com' ) ); ?>">
+					<a href="mailto:<?php echo esc_attr( get_theme_mod( 'aquapro_email', 'williamspoolcare@gmail.com' ) ); ?>">
 						<i class="fas fa-envelope" aria-hidden="true"></i>
-						<?php echo esc_html( get_theme_mod( 'aquapro_email', 'williamspoolscare@gmail.com' ) ); ?>
+						<?php echo esc_html( get_theme_mod( 'aquapro_email', 'williamspoolcare@gmail.com' ) ); ?>
 					</a>
 					<span>
 						<i class="fas fa-clock" aria-hidden="true"></i>

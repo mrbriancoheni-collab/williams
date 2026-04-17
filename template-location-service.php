@@ -48,7 +48,7 @@ $schema = array(
 		'@type'     => 'LocalBusiness',
 		'name'      => 'Williams Pool Care',
 		'telephone' => '+1' . preg_replace( '/\D/', '', $phone ),
-		'email'     => get_theme_mod( 'aquapro_email', 'williamspoolscare@gmail.com' ),
+		'email'     => get_theme_mod( 'aquapro_email', 'williamspoolcare@gmail.com' ),
 	),
 	'areaServed'      => array(
 		'@type'           => 'City',
