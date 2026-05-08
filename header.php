@@ -6,6 +6,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
+	<!-- Event snippet for Submit lead form conversion page -->
+	<script> gtag('event', 'conversion', { 'send_to': 'AW-16884759725/5N6PCIHFxZocEK35o_M-', 'value': 1.0, 'currency': 'USD' }); </script>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
