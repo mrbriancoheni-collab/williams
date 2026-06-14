@@ -584,6 +584,118 @@ function aquapro_get_faq_schema() {
 // AJAX - QUOTE FORM
 // ============================================================
 
+// Register Quote Request CPT
+function aquapro_register_quote_cpt() {
+	register_post_type( 'quote_request', array(
+		'labels'        => array(
+			'name'               => __( 'Quote Requests', 'aquapro' ),
+			'singular_name'      => __( 'Quote Request', 'aquapro' ),
+			'menu_name'          => __( 'Quote Requests', 'aquapro' ),
+			'view_item'          => __( 'View Request', 'aquapro' ),
+			'search_items'       => __( 'Search Requests', 'aquapro' ),
+			'not_found'          => __( 'No quote requests found.', 'aquapro' ),
+		),
+		'public'        => false,
+		'show_ui'       => true,
+		'show_in_menu'  => true,
+		'menu_position' => 5,
+		'menu_icon'     => 'dashicons-email-alt',
+		'supports'      => array( 'title' ),
+		'capabilities'  => array(
+			'create_posts' => 'do_not_allow',
+		),
+		'map_meta_cap'  => true,
+	) );
+}
+add_action( 'init', 'aquapro_register_quote_cpt' );
+
+// Admin columns for Quote Requests
+function aquapro_quote_columns( $cols ) {
+	return array(
+		'cb'       => $cols['cb'],
+		'title'    => __( 'Name', 'aquapro' ),
+		'phone'    => __( 'Phone', 'aquapro' ),
+		'email'    => __( 'Email', 'aquapro' ),
+		'service'  => __( 'Service', 'aquapro' ),
+		'address'  => __( 'Address', 'aquapro' ),
+		'status'   => __( 'Status', 'aquapro' ),
+		'date'     => __( 'Date', 'aquapro' ),
+	);
+}
+add_filter( 'manage_quote_request_posts_columns', 'aquapro_quote_columns' );
+
+function aquapro_quote_column_data( $col, $post_id ) {
+	switch ( $col ) {
+		case 'phone':
+			$v = get_post_meta( $post_id, '_qr_phone', true );
+			echo $v ? '<a href="tel:' . esc_attr( preg_replace( '/\D/', '', $v ) ) . '">' . esc_html( $v ) . '</a>' : '—';
+			break;
+		case 'email':
+			$v = get_post_meta( $post_id, '_qr_email', true );
+			echo $v ? '<a href="mailto:' . esc_attr( $v ) . '">' . esc_html( $v ) . '</a>' : '—';
+			break;
+		case 'service':
+			echo esc_html( get_post_meta( $post_id, '_qr_service', true ) ?: '—' );
+			break;
+		case 'address':
+			echo esc_html( get_post_meta( $post_id, '_qr_address', true ) ?: '—' );
+			break;
+		case 'status':
+			$status = get_post_meta( $post_id, '_qr_status', true ) ?: 'new';
+			$colors = array( 'new' => '#2563eb', 'contacted' => '#d97706', 'closed' => '#16a34a' );
+			$color  = $colors[ $status ] ?? '#6b7280';
+			printf( '<span style="background:%s;color:#fff;padding:3px 10px;border-radius:12px;font-size:0.8rem;font-weight:600;">%s</span>', esc_attr( $color ), esc_html( ucfirst( $status ) ) );
+			break;
+	}
+}
+add_action( 'manage_quote_request_posts_custom_column', 'aquapro_quote_column_data', 10, 2 );
+
+// Meta box to display full submission + status control
+function aquapro_quote_meta_box() {
+	add_meta_box( 'qr_details', __( 'Submission Details', 'aquapro' ), 'aquapro_quote_meta_box_cb', 'quote_request', 'normal', 'high' );
+}
+add_action( 'add_meta_boxes', 'aquapro_quote_meta_box' );
+
+function aquapro_quote_meta_box_cb( $post ) {
+	$fields = array(
+		'_qr_name'     => 'Name',
+		'_qr_phone'    => 'Phone',
+		'_qr_email'    => 'Email',
+		'_qr_service'  => 'Service',
+		'_qr_pool_size'=> 'Pool Size',
+		'_qr_address'  => 'Address',
+		'_qr_message'  => 'Message',
+	);
+	echo '<table style="width:100%;border-collapse:collapse;">';
+	foreach ( $fields as $key => $label ) {
+		$val = get_post_meta( $post->ID, $key, true );
+		echo '<tr><th style="text-align:left;padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;width:130px;">' . esc_html( $label ) . '</th>';
+		echo '<td style="padding:8px 12px;border:1px solid #e5e7eb;">' . nl2br( esc_html( $val ?: '—' ) ) . '</td></tr>';
+	}
+	echo '</table>';
+	$status = get_post_meta( $post->ID, '_qr_status', true ) ?: 'new';
+	wp_nonce_field( 'aquapro_qr_status', 'aquapro_qr_status_nonce' );
+	echo '<p style="margin-top:16px;"><label style="font-weight:600;">' . esc_html__( 'Status:', 'aquapro' ) . ' </label>';
+	echo '<select name="qr_status" style="margin-left:8px;">';
+	foreach ( array( 'new' => 'New', 'contacted' => 'Contacted', 'closed' => 'Closed / Won' ) as $val => $label ) {
+		printf( '<option value="%s"%s>%s</option>', esc_attr( $val ), selected( $status, $val, false ), esc_html( $label ) );
+	}
+	echo '</select></p>';
+}
+
+function aquapro_save_quote_status( $post_id ) {
+	if ( ! isset( $_POST['aquapro_qr_status_nonce'] ) || ! wp_verify_nonce( $_POST['aquapro_qr_status_nonce'], 'aquapro_qr_status' ) ) {
+		return;
+	}
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( isset( $_POST['qr_status'] ) ) {
+		update_post_meta( $post_id, '_qr_status', sanitize_text_field( $_POST['qr_status'] ) );
+	}
+}
+add_action( 'save_post_quote_request', 'aquapro_save_quote_status' );
+
 function aquapro_handle_quote_form() {
 	if ( ! check_ajax_referer( 'aquapro_nonce', 'nonce', false ) ) {
 		wp_send_json_error( array( 'message' => __( 'Security check failed.', 'aquapro' ) ) );
@@ -605,13 +717,34 @@ function aquapro_handle_quote_form() {
 		wp_send_json_error( array( 'message' => __( 'Please enter a valid email address.', 'aquapro' ) ) );
 	}
 
+	// Save submission to database — always works, regardless of email
+	$post_id = wp_insert_post( array(
+		'post_type'   => 'quote_request',
+		'post_title'  => $name . ' — ' . current_time( 'M j, Y g:i a' ),
+		'post_status' => 'publish',
+	) );
+
+	if ( $post_id && ! is_wp_error( $post_id ) ) {
+		update_post_meta( $post_id, '_qr_name',      $name );
+		update_post_meta( $post_id, '_qr_phone',     $phone );
+		update_post_meta( $post_id, '_qr_email',     $email );
+		update_post_meta( $post_id, '_qr_service',   $service );
+		update_post_meta( $post_id, '_qr_pool_size', $size );
+		update_post_meta( $post_id, '_qr_address',   $address );
+		update_post_meta( $post_id, '_qr_message',   $message );
+		update_post_meta( $post_id, '_qr_status',    'new' );
+	}
+
+	// Email notification to admin (bonus — works if SMTP configured)
 	$admin_email = get_option( 'admin_email' );
 	$site_name   = get_bloginfo( 'name' );
 
 	$subject = sprintf( '[%s] New Quote Request from %s', $site_name, $name );
 	$body    = sprintf(
-		"New quote request received:\n\nName: %s\nPhone: %s\nEmail: %s\nService: %s\nPool Size: %s\nAddress: %s\nMessage: %s\n\nSent: %s",
-		$name, $phone, $email, $service, $size, $address, $message, current_time( 'mysql' )
+		"New quote request received:\n\nName: %s\nPhone: %s\nEmail: %s\nService: %s\nPool Size: %s\nAddress: %s\nMessage: %s\n\nView in WP admin: %s\nSent: %s",
+		$name, $phone, $email, $service, $size, $address, $message,
+		admin_url( 'edit.php?post_type=quote_request' ),
+		current_time( 'mysql' )
 	);
 
 	$headers = array(
@@ -619,7 +752,7 @@ function aquapro_handle_quote_form() {
 		'Reply-To: ' . $name . ' <' . $email . '>',
 	);
 
-	$sent = wp_mail( $admin_email, $subject, $body, $headers );
+	wp_mail( $admin_email, $subject, $body, $headers );
 
 	// Auto-responder to customer
 	$customer_subject = sprintf( 'Thanks for contacting %s!', $site_name );
@@ -630,11 +763,7 @@ function aquapro_handle_quote_form() {
 
 	wp_mail( $email, $customer_subject, $customer_body, array( 'Content-Type: text/plain; charset=UTF-8' ) );
 
-	if ( $sent ) {
-		wp_send_json_success( array( 'message' => __( 'Thanks! We\'ll be in touch within 2 hours.', 'aquapro' ) ) );
-	} else {
-		wp_send_json_error( array( 'message' => __( 'Something went wrong. Please call us directly.', 'aquapro' ) ) );
-	}
+	wp_send_json_success( array( 'message' => __( "Thanks! We'll be in touch within 2 hours.", 'aquapro' ) ) );
 }
 add_action( 'wp_ajax_aquapro_quote', 'aquapro_handle_quote_form' );
 add_action( 'wp_ajax_nopriv_aquapro_quote', 'aquapro_handle_quote_form' );
