@@ -380,8 +380,57 @@ function aquapro_customize_register( $wp_customize ) {
 		'section' => 'aquapro_analytics',
 		'type'    => 'text',
 	) );
+
+	// ---- Email / SMTP Section ----
+	$wp_customize->add_section( 'aquapro_smtp', array(
+		'title'       => __( 'Email Settings (SMTP)', 'aquapro' ),
+		'description' => __( 'Configure Gmail SMTP so quote request emails are delivered reliably. Use a Gmail App Password — not your regular Gmail password. Generate one at myaccount.google.com → Security → App Passwords.', 'aquapro' ),
+		'priority'    => 160,
+	) );
+
+	$smtp_settings = array(
+		'aquapro_smtp_from_name'  => array( 'label' => 'From Name',              'default' => 'Williams Pool Care' ),
+		'aquapro_smtp_from_email' => array( 'label' => 'From Email (Gmail address)', 'default' => '' ),
+		'aquapro_smtp_password'   => array( 'label' => 'Gmail App Password',     'default' => '' ),
+		'aquapro_smtp_to'         => array( 'label' => 'Send Leads To (email)',  'default' => '' ),
+	);
+
+	foreach ( $smtp_settings as $key => $args ) {
+		$wp_customize->add_setting( $key, array( 'default' => $args['default'], 'sanitize_callback' => 'sanitize_text_field' ) );
+		$wp_customize->add_control( $key, array(
+			'label'   => __( $args['label'], 'aquapro' ),
+			'section' => 'aquapro_smtp',
+			'type'    => 'text',
+		) );
+	}
 }
 add_action( 'customize_register', 'aquapro_customize_register' );
+
+// ============================================================
+// SMTP — configure PHPMailer directly (no plugin needed)
+// ============================================================
+
+add_action( 'phpmailer_init', function( $phpmailer ) {
+	$from_email = get_theme_mod( 'aquapro_smtp_from_email', '' );
+	$password   = get_theme_mod( 'aquapro_smtp_password', '' );
+
+	// Only activate if credentials are set
+	if ( ! $from_email || ! $password ) {
+		return;
+	}
+
+	$from_name = get_theme_mod( 'aquapro_smtp_from_name', get_bloginfo( 'name' ) );
+
+	$phpmailer->isSMTP();
+	$phpmailer->Host       = 'smtp.gmail.com';
+	$phpmailer->SMTPAuth   = true;
+	$phpmailer->Port       = 587;
+	$phpmailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+	$phpmailer->Username   = $from_email;
+	$phpmailer->Password   = $password;
+	$phpmailer->From       = $from_email;
+	$phpmailer->FromName   = $from_name;
+} );
 
 // ============================================================
 // SEO & SCHEMA
@@ -735,8 +784,9 @@ function aquapro_handle_quote_form() {
 		update_post_meta( $post_id, '_qr_status',    'new' );
 	}
 
-	// Email notification to admin (bonus — works if SMTP configured)
-	$admin_email = get_option( 'admin_email' );
+	// Email notification — sends to the configured lead address, falls back to admin_email
+	$smtp_to     = get_theme_mod( 'aquapro_smtp_to', '' );
+	$admin_email = $smtp_to ?: get_option( 'admin_email' );
 	$site_name   = get_bloginfo( 'name' );
 
 	$subject = sprintf( '[%s] New Quote Request from %s', $site_name, $name );
