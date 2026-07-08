@@ -819,6 +819,22 @@ add_action( 'wp_ajax_aquapro_quote', 'aquapro_handle_quote_form' );
 add_action( 'wp_ajax_nopriv_aquapro_quote', 'aquapro_handle_quote_form' );
 
 // ============================================================
+// XML SITEMAP — served at /sitemap.xml via rewrite rule
+// ============================================================
+
+add_action( 'init', function() {
+	add_rewrite_rule( 'sitemap\.xml$', 'index.php?aquapro_sitemap=1', 'top' );
+	add_rewrite_tag( '%aquapro_sitemap%', '([^&]+)' );
+} );
+
+add_action( 'template_redirect', function() {
+	if ( get_query_var( 'aquapro_sitemap' ) ) {
+		require get_template_directory() . '/inc/sitemap-xml.php';
+		exit;
+	}
+} );
+
+// ============================================================
 // MISC HELPERS
 // ============================================================
 
