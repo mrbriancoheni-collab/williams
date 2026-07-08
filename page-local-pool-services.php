@@ -127,6 +127,10 @@ $city       = get_theme_mod( 'aquapro_city', 'Fair Oaks' );
 			<!-- Right: Quote Form -->
 			<div class="hero-right">
 				<div class="hero-form-card" id="lps-quote-form">
+					<div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:var(--radius-sm);padding:8px 14px;margin-bottom:14px;font-size:0.82rem;font-weight:600;color:#92400E;display:flex;align-items:center;gap:8px;">
+						<i class="fas fa-calendar-check" aria-hidden="true"></i>
+						<span>Summer slots filling fast — <strong>3 openings left this week</strong></span>
+					</div>
 					<h2 class="hero-form-title">Get a Free Pool Cleaning Quote</h2>
 					<p class="hero-form-subtitle">No obligation. Response within <strong>2 business hours.</strong></p>
 
@@ -197,30 +201,7 @@ $city       = get_theme_mod( 'aquapro_city', 'Fair Oaks' );
 	</div>
 </section>
 
-<!-- =============================================
-     TRUST BAR
-     ============================================= -->
-<div style="background:var(--color-white);border-bottom:1px solid var(--color-gray-100);padding:18px 0;">
-	<div class="container">
-		<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:32px;align-items:center;">
-			<?php
-			$trust = array(
-				array( 'fas fa-certificate',  'Certified Pool Operators' ),
-				array( 'fas fa-dollar-sign',  'Flat-Rate Affordable Pricing' ),
-				array( 'fas fa-calendar-check','Same-Week Service Available' ),
-				array( 'fas fa-shield-alt',   'Satisfaction Guaranteed' ),
-				array( 'fas fa-star',         '500+ Five-Star Reviews' ),
-				array( 'fas fa-map-marker-alt','Locally Owned & Operated' ),
-			);
-			foreach ( $trust as $t ) : ?>
-			<div style="display:flex;align-items:center;gap:8px;font-size:0.875rem;font-weight:600;color:var(--color-gray-700);">
-				<i class="<?php echo esc_attr( $t[0] ); ?>" style="color:var(--color-primary);" aria-hidden="true"></i>
-				<?php echo esc_html( $t[1] ); ?>
-			</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</div>
+<?php require get_template_directory() . '/inc/lp-trust-bar.php'; ?>
 
 <!-- =============================================
      WHAT'S INCLUDED IN POOL CLEANING SERVICE
@@ -425,5 +406,25 @@ $city       = get_theme_mod( 'aquapro_city', 'Fair Oaks' );
 </section>
 
 <?php require get_template_directory() . '/inc/service-areas-section.php'; ?>
+
+<!-- Sticky mobile CTA bar -->
+<div id="lpsMobileCta" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--color-primary);padding:12px 16px;box-shadow:0 -4px 16px rgba(0,0,0,0.2);">
+	<div style="display:flex;gap:10px;max-width:480px;margin:0 auto;">
+		<a href="tel:+<?php echo esc_attr( $phone_link ); ?>" style="flex:1;background:white;color:var(--color-primary);font-weight:700;font-size:0.9rem;padding:12px;border-radius:var(--radius-sm);text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">
+			<i class="fas fa-phone" aria-hidden="true"></i> <?php echo esc_html( $phone ); ?>
+		</a>
+		<a href="#lps-quote-form" style="flex:1;background:rgba(255,255,255,0.15);color:white;font-weight:700;font-size:0.9rem;padding:12px;border-radius:var(--radius-sm);text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid rgba(255,255,255,0.3);">
+			<i class="fas fa-clipboard-list" aria-hidden="true"></i> Free Quote
+		</a>
+	</div>
+</div>
+<script>
+(function(){
+	var bar = document.getElementById('lpsMobileCta');
+	if (!bar) return;
+	function show() { if (window.innerWidth < 768) { bar.style.display = 'block'; document.body.style.paddingBottom = '70px'; } else { bar.style.display = 'none'; document.body.style.paddingBottom = ''; } }
+	show(); window.addEventListener('resize', show);
+})();
+</script>
 
 <?php get_footer(); ?>

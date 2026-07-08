@@ -230,9 +230,15 @@
 						}
 						quoteForm.reset();
 
-						// Track conversion
+						// Google Ads conversion (primary — credited to the ad click)
 						if ( typeof gtag !== 'undefined' ) {
-							gtag( 'event', 'quote_form_submit', {
+							if ( typeof aquaproData !== 'undefined' && aquaproData.adsConversionId && aquaproData.adsConversionLabel ) {
+								gtag( 'event', 'conversion', {
+									send_to: aquaproData.adsConversionId + '/' + aquaproData.adsConversionLabel,
+								} );
+							}
+							// GA4 event
+							gtag( 'event', 'generate_lead', {
 								event_category: 'Lead',
 								event_label: 'Quote Form',
 							} );
@@ -262,7 +268,12 @@
 	document.querySelectorAll( 'a[href^="tel:"]' ).forEach( function ( link ) {
 		link.addEventListener( 'click', function () {
 			if ( typeof gtag !== 'undefined' ) {
-				gtag( 'event', 'phone_click', {
+				if ( typeof aquaproData !== 'undefined' && aquaproData.adsConversionId && aquaproData.adsConversionLabel ) {
+					gtag( 'event', 'conversion', {
+						send_to: aquaproData.adsConversionId + '/' + aquaproData.adsConversionLabel,
+					} );
+				}
+				gtag( 'event', 'phone_call', {
 					event_category: 'Contact',
 					event_label: 'Phone Click',
 				} );

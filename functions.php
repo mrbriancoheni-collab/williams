@@ -103,10 +103,12 @@ function aquapro_scripts() {
 
 	// Pass data to JS
 	wp_localize_script( 'aquapro-main', 'aquaproData', array(
-		'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-		'nonce'     => wp_create_nonce( 'aquapro_nonce' ),
-		'siteUrl'   => get_site_url(),
-		'phone'     => get_theme_mod( 'aquapro_phone', '(916) 532-5561' ),
+		'ajaxUrl'            => admin_url( 'admin-ajax.php' ),
+		'nonce'              => wp_create_nonce( 'aquapro_nonce' ),
+		'siteUrl'            => get_site_url(),
+		'phone'              => get_theme_mod( 'aquapro_phone', '(916) 532-5561' ),
+		'adsConversionId'    => get_theme_mod( 'aquapro_ads_conversion_id', '' ),
+		'adsConversionLabel' => get_theme_mod( 'aquapro_ads_conversion_label', '' ),
 	) );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -372,6 +374,29 @@ function aquapro_customize_register( $wp_customize ) {
 		'label'   => __( 'Google Tag Manager ID (GTM-XXXXXX)', 'aquapro' ),
 		'section' => 'aquapro_analytics',
 		'type'    => 'text',
+	) );
+
+	$wp_customize->add_setting( 'aquapro_ads_conversion_id', array( 'default' => '', 'sanitize_callback' => 'sanitize_text_field' ) );
+	$wp_customize->add_control( 'aquapro_ads_conversion_id', array(
+		'label'       => __( 'Google Ads Conversion ID (AW-XXXXXXXXX)', 'aquapro' ),
+		'description' => __( 'Found in Google Ads → Tools → Conversions → your conversion action → Tag setup.', 'aquapro' ),
+		'section'     => 'aquapro_analytics',
+		'type'        => 'text',
+	) );
+
+	$wp_customize->add_setting( 'aquapro_ads_conversion_label', array( 'default' => '', 'sanitize_callback' => 'sanitize_text_field' ) );
+	$wp_customize->add_control( 'aquapro_ads_conversion_label', array(
+		'label'   => __( 'Google Ads Conversion Label', 'aquapro' ),
+		'section' => 'aquapro_analytics',
+		'type'    => 'text',
+	) );
+
+	$wp_customize->add_setting( 'aquapro_reviews_count', array( 'default' => '500+', 'sanitize_callback' => 'sanitize_text_field' ) );
+	$wp_customize->add_control( 'aquapro_reviews_count', array(
+		'label'       => __( 'Google Review Count (e.g. 127)', 'aquapro' ),
+		'description' => __( 'Shown in trust badges on landing pages.', 'aquapro' ),
+		'section'     => 'aquapro_analytics',
+		'type'        => 'text',
 	) );
 
 	$wp_customize->add_setting( 'aquapro_fbpixel', array( 'default' => '', 'sanitize_callback' => 'sanitize_text_field' ) );
