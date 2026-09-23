@@ -63,7 +63,7 @@ $phone_link = get_theme_mod( 'aquapro_phone_link', '19165325561' );
 			array( 'Bi-Weekly Cleaning', home_url( '/services/bi-weekly-cleaning/' ) ),
 			array( 'Chemical Balancing', home_url( '/services/chemical-balancing/' ) ),
 			array( 'Green Pool Treatment', home_url( '/services/green-pool-treatment/' ) ),
-			array( 'Equipment Repair', home_url( '/services/equipment-repair/' ) ),
+			array( 'Equipment Repair', home_url( '/services/pool-equipment-repair/' ) ),
 			array( 'New Pool Start-Up', home_url( '/services/pool-startup/' ) ),
 			array( 'Filter Cleaning', home_url( '/services/filter-cleaning/' ) ),
 		);

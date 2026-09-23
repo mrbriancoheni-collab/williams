@@ -269,7 +269,7 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 						__( 'Automatic cleaner service', 'aquapro' ),
 						__( 'Plumbing & valve repairs', 'aquapro' ),
 					),
-					'link'    => home_url( '/services/equipment-repair/' ),
+					'link'    => home_url( '/services/pool-equipment-repair/' ),
 				),
 				array(
 					'icon'    => '🌿',

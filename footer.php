@@ -81,7 +81,7 @@ $year       = date( 'Y' );
 						<li><a href="<?php echo esc_url( home_url( '/services/chemical-balancing/' ) ); ?>">
 							<i class="fas fa-check-circle" aria-hidden="true"></i> <?php _e( 'Chemical Balancing', 'aquapro' ); ?>
 						</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/services/equipment-repair/' ) ); ?>">
+						<li><a href="<?php echo esc_url( home_url( '/services/pool-equipment-repair/' ) ); ?>">
 							<i class="fas fa-check-circle" aria-hidden="true"></i> <?php _e( 'Equipment Repair', 'aquapro' ); ?>
 						</a></li>
 						<li><a href="<?php echo esc_url( home_url( '/services/green-pool-treatment/' ) ); ?>">
