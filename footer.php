@@ -29,7 +29,6 @@ $year       = date( 'Y' );
 						<?php if ( has_custom_logo() ) : ?>
 							<?php the_custom_logo(); ?>
 						<?php else : ?>
-							<div class="logo-icon" aria-hidden="true">🏊</div>
 							<div class="logo-text">
 								<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
 								<span class="logo-tagline"><?php _e( 'Pool Cleaning Experts', 'aquapro' ); ?></span>

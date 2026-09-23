@@ -87,7 +87,6 @@ $notif_text = get_theme_mod( 'aquapro_notif_text', '🌊 <strong>New Client Spec
 				</div>
 				<?php else : ?>
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" rel="home" aria-label="<?php bloginfo( 'name' ); ?> - Home">
-					<div class="logo-icon" aria-hidden="true">🏊</div>
 					<div class="logo-text">
 						<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
 						<span class="logo-tagline"><?php _e( 'Pool Cleaning Experts', 'aquapro' ); ?></span>

@@ -11,7 +11,15 @@ $phone_link = get_theme_mod( 'aquapro_phone_link', '19165325561' );
 
 <!-- CTA Widget -->
 <div class="widget" style="background:linear-gradient(135deg,var(--color-primary),var(--color-primary-light));border-radius:var(--radius-lg);padding:32px;text-align:center;color:white;margin-bottom:24px;">
-	<div style="font-size:3rem;margin-bottom:12px;" aria-hidden="true">🏊</div>
+	<div style="margin-bottom:14px;display:flex;justify-content:center;">
+		<?php if ( has_custom_logo() ) : ?>
+		<div style="background:white;border-radius:var(--radius-md);padding:6px 14px;display:inline-flex;align-items:center;">
+			<?php the_custom_logo(); ?>
+		</div>
+		<?php else : ?>
+		<span style="font-size:1.2rem;font-weight:800;color:white;letter-spacing:-0.5px;"><?php bloginfo( 'name' ); ?></span>
+		<?php endif; ?>
+	</div>
 	<h3 style="color:white;font-size:1.2rem;margin-bottom:12px;"><?php _e( 'Ready for a Cleaner Pool?', 'aquapro' ); ?></h3>
 	<p style="font-size:0.875rem;color:rgba(255,255,255,0.8);margin-bottom:20px;line-height:1.6;">
 		<?php _e( 'Get your no-obligation free quote today. Same-week service available.', 'aquapro' ); ?>

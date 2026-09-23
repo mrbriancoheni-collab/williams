@@ -67,7 +67,15 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 
 			<div>
 				<div style="background:linear-gradient(135deg,var(--color-primary),var(--color-secondary));border-radius:var(--radius-xl);padding:48px;text-align:center;color:white;box-shadow:var(--shadow-blue);">
-					<div style="font-size:6rem;margin-bottom:16px;" aria-hidden="true">🏊</div>
+					<div style="margin-bottom:20px;display:flex;justify-content:center;">
+						<?php if ( has_custom_logo() ) : ?>
+						<div style="background:white;border-radius:var(--radius-lg);padding:10px 24px;display:inline-flex;align-items:center;">
+							<?php the_custom_logo(); ?>
+						</div>
+						<?php else : ?>
+						<span style="font-size:1.5rem;font-weight:800;color:white;letter-spacing:-0.5px;"><?php bloginfo( 'name' ); ?></span>
+						<?php endif; ?>
+					</div>
 					<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;">
 						<?php
 						$stats = array(
