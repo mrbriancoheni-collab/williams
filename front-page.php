@@ -393,7 +393,28 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 	<div class="container">
 		<div class="why-grid">
 			<div class="why-image-wrap" data-reveal="left">
-				<div class="why-image-main">🏊</div>
+				<div class="why-image-main" role="img" aria-label="<?php esc_attr_e( 'Williams Pool Care by the numbers', 'aquapro' ); ?>">
+					<div class="why-stat-tile">
+						<span class="stat-icon" aria-hidden="true"><i class="fas fa-calendar-check" style="color:rgba(255,255,255,0.8);"></i></span>
+						<span class="stat-number"><?php echo esc_html( $years_exp ); ?></span>
+						<span class="stat-label"><?php _e( 'Years in Business', 'aquapro' ); ?></span>
+					</div>
+					<div class="why-stat-tile">
+						<span class="stat-icon" aria-hidden="true"><i class="fas fa-swimming-pool" style="color:rgba(255,255,255,0.8);"></i></span>
+						<span class="stat-number"><?php echo esc_html( $pools ); ?></span>
+						<span class="stat-label"><?php _e( 'Pools Serviced', 'aquapro' ); ?></span>
+					</div>
+					<div class="why-stat-tile">
+						<span class="stat-icon" aria-hidden="true"><i class="fas fa-star" style="color:#F4A825;"></i></span>
+						<span class="stat-number"><?php echo esc_html( $reviews ); ?></span>
+						<span class="stat-label"><?php _e( '5-Star Reviews', 'aquapro' ); ?></span>
+					</div>
+					<div class="why-stat-tile">
+						<span class="stat-icon" aria-hidden="true"><i class="fas fa-shield-alt" style="color:rgba(255,255,255,0.8);"></i></span>
+						<span class="stat-number">100%</span>
+						<span class="stat-label"><?php _e( 'Satisfaction Rate', 'aquapro' ); ?></span>
+					</div>
+				</div>
 				<div class="why-image-badge">
 					<div class="why-badge-number"><?php echo esc_html( $years_exp ); ?></div>
 					<div class="why-badge-text"><?php printf( __( 'Years Serving<br>%s', 'aquapro' ), esc_html( $city ) ); ?></div>
@@ -484,6 +505,10 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 						<?php if ( $service ) : ?>
 						<div class="testimonial-service-tag"><?php echo esc_html( $service ); ?></div>
 						<?php endif; ?>
+						<div class="testimonial-source" aria-label="<?php esc_attr_e( 'Google Review', 'aquapro' ); ?>">
+							<span class="google-g" aria-hidden="true">G</span>
+							<?php _e( 'Google Review', 'aquapro' ); ?>
+						</div>
 						<div class="testimonial-quote" aria-hidden="true">"</div>
 						<div class="testimonial-stars" aria-label="<?php echo esc_attr( sprintf( __( '%d out of 5 stars', 'aquapro' ), $rating ) ); ?>">
 							<?php echo aquapro_stars( $rating ); ?>
@@ -550,6 +575,10 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 				foreach ( $defaults as $t ) : ?>
 				<article class="testimonial-card" data-reveal itemscope itemtype="https://schema.org/Review">
 					<div class="testimonial-service-tag"><?php echo esc_html( $t['service'] ); ?></div>
+					<div class="testimonial-source" aria-label="<?php esc_attr_e( 'Google Review', 'aquapro' ); ?>">
+						<span class="google-g" aria-hidden="true">G</span>
+						<?php _e( 'Google Review', 'aquapro' ); ?>
+					</div>
 					<div class="testimonial-quote" aria-hidden="true">"</div>
 					<div class="testimonial-stars" aria-label="5 out of 5 stars">
 						<?php echo aquapro_stars( 5 ); ?>

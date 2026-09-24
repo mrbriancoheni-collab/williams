@@ -92,6 +92,14 @@ function aquapro_scripts() {
 		$ver
 	);
 
+	// Design enhancements (layered on top)
+	wp_enqueue_style(
+		'aquapro-design',
+		get_template_directory_uri() . '/assets/css/design-enhancements.css',
+		array( 'aquapro-style' ),
+		$ver
+	);
+
 	// Main JS
 	wp_enqueue_script(
 		'aquapro-main',
