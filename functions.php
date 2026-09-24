@@ -580,7 +580,7 @@ function aquapro_head_seo() {
 	}
 
 	// FAQ Schema for FAQ page
-	if ( is_page_template( 'template-faq.php' ) ) {
+	if ( is_page_template( 'page-faq.php' ) || is_page( 'faq' ) ) {
 		$faq_schema = array(
 			'@context'   => 'https://schema.org',
 			'@type'      => 'FAQPage',
