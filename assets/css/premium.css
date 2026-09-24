@@ -725,3 +725,440 @@ p { line-height: 1.8; }
 @media (max-width: 480px) {
   .trust-item { width: 100%; }
 }
+
+/* ============================================================
+   SCROLL REVEAL — initial hidden state → revealed transition
+   The JS IntersectionObserver adds .revealed when an element
+   scrolls into view. Without this CSS nothing actually animates.
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal="left"] {
+  transform: translateX(-44px) translateY(0);
+}
+
+[data-reveal="right"] {
+  transform: translateX(44px) translateY(0);
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0) translateX(0);
+}
+
+/* Stagger siblings inside a grid so they cascade in */
+[data-reveal]:nth-child(2) { transition-delay: 0.12s; }
+[data-reveal]:nth-child(3) { transition-delay: 0.22s; }
+[data-reveal]:nth-child(4) { transition-delay: 0.32s; }
+[data-reveal]:nth-child(5) { transition-delay: 0.42s; }
+[data-reveal]:nth-child(6) { transition-delay: 0.52s; }
+
+/* Section headers always treat themselves as a single reveal unit */
+.section-header[data-reveal] { transition-delay: 0s !important; }
+
+/* ============================================================
+   HERO — load animations (above fold, plays on page load)
+   ============================================================ */
+@keyframes aquaFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes aquaFadeRight {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes aquaScaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Animated background — slow gradient pulse */
+@keyframes heroBgPulse {
+  0%   { background-position: 0% 60%; }
+  50%  { background-position: 100% 40%; }
+  100% { background-position: 0% 60%; }
+}
+
+.hero-section {
+  background: linear-gradient(
+    -45deg,
+    #060F1C,
+    #0A1628,
+    #0D2545,
+    #003d5c,
+    #0A1628
+  );
+  background-size: 400% 400%;
+  animation: heroBgPulse 16s ease infinite;
+}
+
+.hero-badge       { animation: aquaFadeRight 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s both; }
+.hero-title       { animation: aquaFadeUp    0.9s cubic-bezier(0.16,1,0.3,1) 0.30s both; }
+.hero-description { animation: aquaFadeUp    0.9s cubic-bezier(0.16,1,0.3,1) 0.48s both; }
+.hero-actions     { animation: aquaFadeUp    0.9s cubic-bezier(0.16,1,0.3,1) 0.62s both; }
+.hero-stats       { animation: aquaFadeUp    0.9s cubic-bezier(0.16,1,0.3,1) 0.76s both; }
+.hero-form-card   { animation: aquaScaleIn   1.0s cubic-bezier(0.16,1,0.3,1) 0.20s both; }
+
+/* Decorative floating circles behind hero headline */
+.hero-left::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -80px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  border: 1px solid rgba(240,165,0,0.08);
+  pointer-events: none;
+  animation: heroBgPulse 20s ease infinite reverse;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 10%;
+  right: -120px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,150,199,0.07);
+  pointer-events: none;
+}
+
+/* ============================================================
+   SECTION TITLES — <span> inside h2 gets gold gradient text
+   ============================================================ */
+.section-title span,
+.hero-form-title span {
+  background: linear-gradient(135deg, #F0A500, #FFD166, #F0A500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* On dark backgrounds the span is already white-ish; keep it gold */
+.how-section .section-title span,
+.testimonials-section .section-title span,
+.page-hero .page-hero-title span {
+  background: linear-gradient(135deg, #F0A500, #FFD166);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   SERVICE CARDS — per-card color band via CSS custom property
+   --card-color is set via inline style on the article element
+   ============================================================ */
+.service-card {
+  --card-color: var(--color-primary);
+}
+
+/* Colored top band (replaces the thin hover-only line) */
+.service-card::before {
+  height: 5px;
+  background: var(--card-color);
+  transform: scaleX(1);
+  opacity: 1;
+  border-radius: 18px 18px 0 0;
+}
+
+/* Subtle tinted shadow */
+.service-card:hover {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04),
+              0 24px 64px rgba(0,0,0,0.12),
+              0 0 0 1px rgba(0,0,0,0.04);
+}
+
+/* Icon uses the card color via CSS custom property */
+.service-icon-wrap {
+  background: var(--card-color-bg, rgba(0,95,146,0.12)) !important;
+  color: var(--card-color) !important;
+  border: 1.5px solid rgba(0,0,0,0.06);
+}
+
+.service-icon-wrap i {
+  color: var(--card-color) !important;
+}
+
+.service-link {
+  color: var(--card-color);
+}
+
+.service-link:hover {
+  gap: 10px;
+}
+
+/* ============================================================
+   HOW IT WORKS — large decorative step numerals
+   ============================================================ */
+.step-item {
+  position: relative;
+}
+
+.step-item::before {
+  content: '0' counter(step-counter);
+  counter-increment: step-counter;
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  font-size: 7rem;
+  font-weight: 900;
+  font-family: var(--font-heading, 'Montserrat', sans-serif);
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+  z-index: 0;
+}
+
+.steps-grid {
+  counter-reset: step-counter;
+}
+
+.step-number,
+.step-title,
+.step-description {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   TESTIMONIALS — larger, more dramatic quote mark
+   ============================================================ */
+.testimonial-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-quote {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  font-size: 7rem;
+  line-height: 1;
+  color: rgba(240,165,0,0.12);
+  font-family: Georgia, serif;
+  font-weight: 900;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.testimonial-stars,
+.testimonial-text,
+.testimonial-author,
+.testimonial-service-tag,
+.testimonial-source {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   WHY SECTION — more dramatic stat tiles
+   ============================================================ */
+.why-stat-tile {
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.why-stat-tile:hover {
+  background: linear-gradient(145deg, rgba(240,165,0,0.15), rgba(240,165,0,0.08));
+  border-color: rgba(240,165,0,0.3);
+  transform: translateY(-4px);
+}
+
+.stat-number {
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #fff;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-icon { display: none; } /* Icon replaced by large number */
+
+/* Badge overlay on why-stat grid */
+.why-image-badge {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+}
+
+.why-badge-number {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* ============================================================
+   DECORATIVE DOTS PATTERN — light sections get subtle texture
+   ============================================================ */
+.services-section,
+.why-section,
+.areas-section {
+  background-image: radial-gradient(rgba(0,95,146,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: 14px 14px;
+}
+
+/* ============================================================
+   FORM INPUTS — premium focus states
+   ============================================================ */
+.form-control {
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 13px 16px;
+  font-size: 0.95rem;
+  color: #0A1628;
+  background: #FAFCFF;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  outline: none;
+  width: 100%;
+}
+
+.form-control:focus {
+  border-color: #F0A500;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(240,165,0,0.12);
+}
+
+.form-control::placeholder { color: #A0AEC0; }
+
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23718096' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+.form-group label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #374151;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+  display: block;
+}
+
+/* ============================================================
+   DARK SECTION DECORATIVE CIRCLES
+   Subtle large circles give depth to navy backgrounds
+   ============================================================ */
+.how-section {
+  overflow: hidden;
+}
+
+.how-section::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,165,0,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.how-section::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,150,199,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.testimonials-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials-section::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,165,0,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   AREAS SECTION — map-pin items more polished
+   ============================================================ */
+.areas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.area-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+}
+
+/* ============================================================
+   CTA SECTION — animated gradient border accent
+   ============================================================ */
+.cta-section::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #F0A500, transparent);
+}
+
+/* ============================================================
+   SCROLL REVEAL — reduce motion for users who prefer it
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .hero-badge,
+  .hero-title,
+  .hero-description,
+  .hero-actions,
+  .hero-stats,
+  .hero-form-card {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hero-section { animation: none !important; }
+}

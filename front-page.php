@@ -318,9 +318,16 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 				),
 			);
 
-			foreach ( $services as $service ) : ?>
-			<article class="service-card" data-reveal>
-				<div class="service-icon-wrap" aria-hidden="true" style="background:linear-gradient(135deg,<?php echo esc_attr($service['color']); ?>,<?php echo esc_attr($service['color']); ?>cc)"><i class="<?php echo esc_attr($service['icon']); ?>" aria-hidden="true"></i></div>
+			foreach ( $services as $service ) :
+					// Compute an rgba() alpha version for CSS use (12% opacity for icon bg)
+					$hex = ltrim( $service['color'], '#' );
+					$r   = hexdec( substr( $hex, 0, 2 ) );
+					$g   = hexdec( substr( $hex, 2, 2 ) );
+					$b   = hexdec( substr( $hex, 4, 2 ) );
+					$card_bg = "rgba({$r},{$g},{$b},0.12)";
+				?>
+			<article class="service-card" data-reveal style="--card-color:<?php echo esc_attr($service['color']); ?>;--card-color-bg:<?php echo esc_attr($card_bg); ?>">
+				<div class="service-icon-wrap" aria-hidden="true"><i class="<?php echo esc_attr($service['icon']); ?>" aria-hidden="true"></i></div>
 				<h3 class="service-name"><?php echo esc_html( $service['name'] ); ?></h3>
 				<p class="service-description"><?php echo esc_html( $service['desc'] ); ?></p>
 				<ul class="service-features" role="list">
