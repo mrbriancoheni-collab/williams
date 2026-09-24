@@ -78,11 +78,11 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 						<span class="hero-stat-number"><?php echo esc_html( $years_exp ); ?><span></span></span>
 						<span class="hero-stat-label"><?php _e( 'Years Experience', 'aquapro' ); ?></span>
 					</div>
-					<div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.15);padding-left:32px;">
+					<div class="hero-stat">
 						<span class="hero-stat-number"><?php echo esc_html( $pools ); ?><span></span></span>
 						<span class="hero-stat-label"><?php _e( 'Pools Serviced', 'aquapro' ); ?></span>
 					</div>
-					<div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.15);padding-left:32px;">
+					<div class="hero-stat">
 						<span class="hero-stat-number"><?php echo esc_html( $reviews ); ?><span></span></span>
 						<span class="hero-stat-label"><?php _e( '5-Star Reviews', 'aquapro' ); ?></span>
 					</div>
@@ -232,7 +232,8 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 			<?php
 			$services = array(
 				array(
-					'icon'    => '🧹',
+					'icon'    => 'fas fa-broom',
+					'color'   => '#0077B6',
 					'name'    => __( 'Weekly Pool Cleaning', 'aquapro' ),
 					'desc'    => __( 'Our most popular service. We visit your pool every week to skim, brush, vacuum, and test chemicals — keeping your pool pristine 52 weeks a year.', 'aquapro' ),
 					'features'=> array(
@@ -246,7 +247,8 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 					'link'    => home_url( '/services/weekly-pool-cleaning/' ),
 				),
 				array(
-					'icon'    => '🧪',
+					'icon'    => 'fas fa-flask',
+					'color'   => '#7B2FBE',
 					'name'    => __( 'Chemical Balancing', 'aquapro' ),
 					'desc'    => __( 'Improper water chemistry is the #1 cause of pool damage and swimmer health issues. We test and precisely adjust pH, chlorine, alkalinity, and calcium hardness.', 'aquapro' ),
 					'features'=> array(
@@ -259,7 +261,8 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 					'link'    => home_url( '/services/chemical-balancing/' ),
 				),
 				array(
-					'icon'    => '🔧',
+					'icon'    => 'fas fa-tools',
+					'color'   => '#D97706',
 					'name'    => __( 'Equipment Repair', 'aquapro' ),
 					'desc'    => __( 'Pool pump not running? Filter pressure too high? Our experienced technicians diagnose and repair all major pool equipment brands quickly and affordably.', 'aquapro' ),
 					'features'=> array(
@@ -272,7 +275,8 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 					'link'    => home_url( '/services/pool-equipment-repair/' ),
 				),
 				array(
-					'icon'    => '🌿',
+					'icon'    => 'fas fa-leaf',
+					'color'   => '#059669',
 					'name'    => __( 'Green Pool Treatment', 'aquapro' ),
 					'desc'    => __( "Algae taking over? We'll have your pool back to sparkling blue within 24–72 hours. Our proven shock treatment and algaecide protocol is fast and effective.", 'aquapro' ),
 					'features'=> array(
@@ -285,7 +289,8 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 					'link'    => home_url( '/services/green-pool-treatment/' ),
 				),
 				array(
-					'icon'    => '🏊',
+					'icon'    => 'fas fa-swimming-pool',
+					'color'   => '#0096C7',
 					'name'    => __( 'New Pool Start-Up', 'aquapro' ),
 					'desc'    => __( "Just installed a new pool or opening after winter? We'll properly establish your water chemistry from scratch so your pool starts off on the right foot.", 'aquapro' ),
 					'features'=> array(
@@ -298,7 +303,8 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 					'link'    => home_url( '/services/pool-startup/' ),
 				),
 				array(
-					'icon'    => '🔄',
+					'icon'    => 'fas fa-filter',
+					'color'   => '#DC2626',
 					'name'    => __( 'Filter Cleaning', 'aquapro' ),
 					'desc'    => __( 'A dirty filter means a dirty pool — and wasted energy. We deep-clean cartridge, sand, and DE filters to restore full circulation and filtration efficiency.', 'aquapro' ),
 					'features'=> array(
@@ -314,7 +320,7 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 
 			foreach ( $services as $service ) : ?>
 			<article class="service-card" data-reveal>
-				<div class="service-icon-wrap" aria-hidden="true"><?php echo $service['icon']; ?></div>
+				<div class="service-icon-wrap" aria-hidden="true" style="background:linear-gradient(135deg,<?php echo esc_attr($service['color']); ?>,<?php echo esc_attr($service['color']); ?>cc)"><i class="<?php echo esc_attr($service['icon']); ?>" aria-hidden="true"></i></div>
 				<h3 class="service-name"><?php echo esc_html( $service['name'] ); ?></h3>
 				<p class="service-description"><?php echo esc_html( $service['desc'] ); ?></p>
 				<ul class="service-features" role="list">
@@ -343,7 +349,7 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 <!-- =============================================
      HOW IT WORKS
      ============================================= -->
-<section class="how-section section-padding" aria-labelledby="how-title">
+<section class="how-section section-padding section-navy" aria-labelledby="how-title">
 	<div class="container">
 		<div class="section-header center" data-reveal>
 			<span class="section-badge">
@@ -361,15 +367,15 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 		<div class="steps-grid">
 			<?php
 			$steps = array(
-				array( '📞', __( 'Call or Request Online', 'aquapro' ), __( 'Call us or fill out our quick quote form. We respond within 2 business hours with a custom quote.', 'aquapro' ) ),
-				array( '📋', __( 'Free In-Person Assessment', 'aquapro' ), __( "We visit your property at no charge to assess your pool's condition, size, and specific needs.", 'aquapro' ) ),
-				array( '📅', __( 'Schedule Your Service', 'aquapro' ), __( "Choose a recurring service plan that fits your schedule and budget. We'll lock in your day/time slot.", 'aquapro' ) ),
-				array( '🏊', __( 'Relax &amp; Enjoy', 'aquapro' ), __( "Our certified techs handle everything. You'll get a digital service report after every visit.", 'aquapro' ) ),
+				array( 'fas fa-phone-alt', __( 'Call or Request Online', 'aquapro' ), __( 'Call us or fill out our quick quote form. We respond within 2 business hours with a custom quote.', 'aquapro' ) ),
+				array( 'fas fa-clipboard-list', __( 'Free In-Person Assessment', 'aquapro' ), __( "We visit your property at no charge to assess your pool's condition, size, and specific needs.", 'aquapro' ) ),
+				array( 'fas fa-calendar-check', __( 'Schedule Your Service', 'aquapro' ), __( "Choose a recurring service plan that fits your schedule and budget. We'll lock in your day/time slot.", 'aquapro' ) ),
+				array( 'fas fa-swimmer', __( 'Relax &amp; Enjoy', 'aquapro' ), __( "Our certified techs handle everything. You'll get a digital service report after every visit.", 'aquapro' ) ),
 			);
 			foreach ( $steps as $i => $step ) : ?>
 			<div class="step-item" data-reveal>
 				<div class="step-number" aria-hidden="true">
-					<span class="step-icon"><?php echo $step[0]; ?></span>
+					<i class="<?php echo esc_attr($step[0]); ?>" aria-hidden="true" style="font-size:2rem;"></i>
 				</div>
 				<h3 class="step-title"><?php echo wp_kses_post( $step[1] ); ?></h3>
 				<p class="step-description"><?php echo esc_html( $step[2] ); ?></p>
@@ -436,14 +442,14 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 				<div class="why-features">
 					<?php
 					$features = array(
-						array( '🏅', __( 'Certified Pool Technicians', 'aquapro' ), __( 'All our technicians are trained, certified, and background-checked. You can trust who is at your property.', 'aquapro' ) ),
-						array( '📱', __( 'Digital Service Reports', 'aquapro' ), __( 'After every visit you receive a detailed report with chemicals added, equipment status, and photos.', 'aquapro' ) ),
-						array( '💰', __( 'Transparent, Flat-Rate Pricing', 'aquapro' ), __( 'No surprise charges. We customize your plan and give you a clear, flat monthly rate upfront.', 'aquapro' ) ),
-						array( '🌟', __( 'Satisfaction Guaranteed', 'aquapro' ), __( 'Not happy with a visit? We come back and make it right — at no additional charge.', 'aquapro' ) ),
+						array( 'fas fa-id-badge', __( 'Certified Pool Technicians', 'aquapro' ), __( 'All our technicians are trained, certified, and background-checked. You can trust who is at your property.', 'aquapro' ) ),
+						array( 'fas fa-mobile-alt', __( 'Digital Service Reports', 'aquapro' ), __( 'After every visit you receive a detailed report with chemicals added, equipment status, and photos.', 'aquapro' ) ),
+						array( 'fas fa-dollar-sign', __( 'Transparent, Flat-Rate Pricing', 'aquapro' ), __( 'No surprise charges. We customize your plan and give you a clear, flat monthly rate upfront.', 'aquapro' ) ),
+						array( 'fas fa-star', __( 'Satisfaction Guaranteed', 'aquapro' ), __( 'Not happy with a visit? We come back and make it right — at no additional charge.', 'aquapro' ) ),
 					);
 					foreach ( $features as $f ) : ?>
 					<div class="why-feature">
-						<div class="why-feature-icon" aria-hidden="true"><?php echo $f[0]; ?></div>
+						<div class="why-feature-icon" aria-hidden="true"><i class="<?php echo esc_attr($f[0]); ?>" aria-hidden="true"></i></div>
 						<div>
 							<h3 class="why-feature-title"><?php echo esc_html( $f[1] ); ?></h3>
 							<p class="why-feature-text"><?php echo esc_html( $f[2] ); ?></p>
@@ -468,7 +474,7 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 <!-- =============================================
      TESTIMONIALS
      ============================================= -->
-<section class="testimonials-section section-padding" aria-labelledby="testimonials-title">
+<section class="testimonials-section section-warm section-padding" aria-labelledby="testimonials-title">
 	<div class="container">
 		<div class="section-header center" data-reveal>
 			<span class="section-badge">
@@ -631,27 +637,27 @@ $reviews    = get_theme_mod( 'aquapro_reviews', '500+' );
 		<div class="areas-grid" aria-label="<?php esc_attr_e( 'Service areas list', 'aquapro' ); ?>">
 			<?php
 			$areas = array(
-				array( '📍', 'Fair Oaks' ),
-				array( '📍', 'Sacramento' ),
-				array( '📍', 'Citrus Heights' ),
-				array( '📍', 'Roseville' ),
-				array( '📍', 'Rocklin' ),
-				array( '📍', 'Folsom' ),
-				array( '📍', 'Orangevale' ),
-				array( '📍', 'Granite Bay' ),
-				array( '📍', 'Loomis' ),
-				array( '📍', 'Penryn' ),
-				array( '📍', 'Carmichael' ),
-				array( '📍', 'Rancho Cordova' ),
-				array( '📍', 'Gold River' ),
-				array( '📍', 'Elk Grove' ),
-				array( '📍', 'Lincoln' ),
-				array( '📍', 'Auburn' ),
+				'Fair Oaks',
+				'Sacramento',
+				'Citrus Heights',
+				'Roseville',
+				'Rocklin',
+				'Folsom',
+				'Orangevale',
+				'Granite Bay',
+				'Loomis',
+				'Penryn',
+				'Carmichael',
+				'Rancho Cordova',
+				'Gold River',
+				'Elk Grove',
+				'Lincoln',
+				'Auburn',
 			);
 			foreach ( $areas as $area ) : ?>
 			<div class="area-item">
-				<span class="area-icon" aria-hidden="true"><?php echo $area[0]; ?></span>
-				<span class="area-name"><?php echo esc_html( $area[1] ); ?></span>
+				<i class="fas fa-map-marker-alt area-icon" aria-hidden="true"></i>
+				<span class="area-name"><?php echo esc_html( $area ); ?></span>
 			</div>
 			<?php endforeach; ?>
 		</div>
