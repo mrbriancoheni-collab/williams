@@ -71,16 +71,14 @@ if ( $services_query->have_posts() ) : ?>
 
 <?php else : ?>
 
-<!-- Default services if CPT not populated -->
-<section class="services-section section-padding">
-	<div class="container">
-		<p style="text-align:center;color:var(--color-gray-500);margin-bottom:40px;">
-			<?php _e( 'Add services via the WordPress admin under Services.', 'aquapro' ); ?>
-		</p>
-		<?php
-		// Re-use services from front page
-		the_content();
-		?>
+<!-- Fallback: no CPTs — render page content in a styled card -->
+<section class="section-padding service-single-section">
+	<div class="container" style="max-width:860px;">
+		<article class="service-content-card">
+			<div class="entry-content">
+				<?php the_content(); ?>
+			</div>
+		</article>
 	</div>
 </section>
 

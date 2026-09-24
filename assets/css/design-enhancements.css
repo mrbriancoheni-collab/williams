@@ -7,7 +7,8 @@
    TYPOGRAPHY REFINEMENTS
    ============================================================ */
 
-/* Tighter, heavier headings */
+/* Tighter, heavier headings — marketing/section context only.
+   Content areas (.entry-content) get their own prose-appropriate rules. */
 h1, h2, h3, h4 {
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -16,6 +17,23 @@ h1, h2, h3, h4 {
 h3, h4 {
   letter-spacing: -0.01em;
 }
+
+/* Prose reset: headings inside WordPress editor output should NOT
+   inherit the marketing heading weight/tracking */
+.entry-content h1,
+.entry-content h2,
+.entry-content h3,
+.entry-content h4,
+.entry-content h5,
+.entry-content h6 {
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.entry-content h2 { font-size: 1.45rem; }
+.entry-content h3 { font-size: 1.15rem; }
+.entry-content h4 { font-size: 1rem;    }
 
 /* Body copy: slightly darker for better contrast */
 body {
