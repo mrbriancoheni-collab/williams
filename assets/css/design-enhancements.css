@@ -692,6 +692,15 @@ body {
     aspect-ratio: 3/2;
     grid-template-columns: repeat(4, 1fr);
   }
+
+  /* Header logo: tighten on tablet */
+  img.custom-logo {
+    height: 46px !important;
+  }
+
+  .custom-logo-link {
+    height: 46px !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -749,5 +758,123 @@ body {
   .floating-cta {
     bottom: 16px;
     right: 16px;
+  }
+}
+
+/* ============================================================
+   MOBILE LOGO — header bar, overlay, footer
+   ============================================================ */
+
+/* ---- Header bar logo on mobile ---- */
+@media (max-width: 992px) {
+  /* Shrink logo to keep header compact; phone is hidden so space allows it */
+  img.custom-logo {
+    height: 42px !important;
+    max-width: 160px !important;
+  }
+
+  .custom-logo-link {
+    height: 42px !important;
+  }
+
+  /* Text fallback: keep it legible on the transparent/dark header */
+  .site-logo .logo-name,
+  a.site-logo .logo-name {
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+
+  .site-logo .logo-tagline,
+  a.site-logo .logo-tagline {
+    font-size: 0.6rem;
+    color: var(--color-accent);
+  }
+
+  /* Hide the "Free Quote" CTA button in the header on mobile to give the logo room */
+  .header-cta .btn-sm {
+    display: none;
+  }
+}
+
+/* ---- Mobile nav overlay logo ---- */
+/* When the full-screen menu opens, the logo sits at the top-centre */
+.main-nav.open .mobile-nav-logo {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  /* Override position: keep it centred without clipping */
+  position: absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  transform: none;    /* remove the translateX(-50%) that needs a fixed width */
+  white-space: nowrap;
+}
+
+/* Custom logo inside the overlay */
+.main-nav.open .mobile-nav-logo .custom-logo-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 48px !important;
+}
+
+.main-nav.open .mobile-nav-logo img.custom-logo {
+  height: 48px !important;
+  width: auto !important;
+  max-width: 200px !important;
+}
+
+/* Text fallback inside the overlay */
+.main-nav.open .mobile-nav-logo .logo-name {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Push nav links down so they don't sit under the logo */
+.main-nav.open ul {
+  padding-top: 72px;
+}
+
+/* ---- Footer logo on mobile ---- */
+@media (max-width: 768px) {
+  /* Footer stacks to one column — logo gets full width, centre it */
+  .footer-brand {
+    text-align: center;
+  }
+
+  .footer-logo {
+    justify-content: center;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+
+  .footer-brand-desc {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 42ch;
+  }
+
+  /* Custom logo in footer */
+  .footer-logo .custom-logo-link {
+    height: 46px !important;
+  }
+
+  .footer-logo img.custom-logo {
+    height: 46px !important;
+    max-width: 180px !important;
+  }
+
+  /* Text fallback in footer */
+  .footer-logo .logo-name {
+    font-size: 1.3rem;
+    color: #ffffff;
+  }
+
+  .footer-logo .logo-tagline {
+    color: var(--color-accent);
   }
 }
