@@ -668,6 +668,16 @@ p { line-height: 1.8; }
 @media (max-width: 992px) {
   :root { --spacing-section: 80px; }
 
+  /* Mobile header: always solid dark so white logo stays visible
+     (transparent header works on desktop where a dark hero fills the viewport,
+     but on mobile the hero may be shorter or not present on inner pages) */
+  .site-header,
+  .site-header.transparent {
+    background: rgba(10, 22, 40, 0.97) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
   .how-section {
     clip-path: polygon(0 20px, 100% 0, 100% calc(100% - 20px), 0 100%);
     padding-top: calc(var(--spacing-section) + 20px);
