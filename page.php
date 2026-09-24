@@ -15,17 +15,15 @@ get_header();
 	</div>
 </div>
 
-<section class="section-padding">
+<section class="section-padding" style="background:#F3F6FA;">
 	<div class="container-narrow">
 		<article <?php post_class( 'page-content' ); ?>>
-			<?php
-			if ( has_post_thumbnail() ) {
-				echo '<div style="border-radius:var(--radius-xl);overflow:hidden;margin-bottom:40px;box-shadow:var(--shadow-lg);">';
-				the_post_thumbnail( 'aquapro-hero', array( 'style' => 'width:100%;height:auto;display:block;' ) );
-				echo '</div>';
-			}
-			?>
-			<div class="entry-content" style="line-height:1.85;color:var(--color-gray-700);">
+			<?php if ( has_post_thumbnail() ) : ?>
+			<div class="service-featured-img" style="margin-bottom:36px;">
+				<?php the_post_thumbnail( 'aquapro-hero', array( 'alt' => get_the_title() ) ); ?>
+			</div>
+			<?php endif; ?>
+			<div class="entry-content">
 				<?php the_content(); ?>
 			</div>
 		</article>
