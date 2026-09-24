@@ -1,0 +1,717 @@
+/*
+ * Premium Design — AquaPro
+ * Full visual overhaul: color shift, typography scale, angled sections,
+ * gold CTAs, card redesign, section separators.
+ */
+
+/* ============================================================
+   COLOR TOKEN OVERRIDES
+   ============================================================ */
+:root {
+  --color-primary:       #005F92;
+  --color-primary-dark:  #00405E;
+  --color-primary-light: #0077B6;
+  --color-secondary:     #0096C7;
+  --color-accent:        #48CAE4;
+  --color-gold:          #F0A500;
+  --color-gold-dark:     #CC8A00;
+  --color-dark:          #0A1628;
+  --color-dark-2:        #0D1E35;
+  --color-gray-900:      #0A1628;
+  --shadow-gold:         0 10px 40px rgba(240,165,0,0.35);
+}
+
+/* ============================================================
+   GLOBAL TYPOGRAPHY
+   ============================================================ */
+body {
+  color: #2D3748;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+h3, h4 { letter-spacing: -0.02em; line-height: 1.2; }
+
+p { line-height: 1.8; }
+
+/* ============================================================
+   NOTIFICATION BAR — gold strip
+   ============================================================ */
+.notification-bar {
+  background: linear-gradient(90deg, #CC8A00, #F0A500, #CC8A00);
+  color: #0A1628;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-bottom: none;
+}
+
+.notification-bar strong { color: #0A1628; }
+.notification-close { color: #0A1628; opacity: 0.7; }
+.notification-close:hover { opacity: 1; }
+
+/* ============================================================
+   HEADER — deeper, crisper
+   ============================================================ */
+.site-header.scrolled {
+  background: rgba(10, 22, 40, 0.98);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.4);
+}
+
+.header-top-bar {
+  background: #00405E;
+}
+
+.logo-name   { color: #fff; }
+.logo-tagline { color: var(--color-accent); }
+
+/* ============================================================
+   BUTTONS — gold primary, navy secondary
+   ============================================================ */
+
+/* Primary → gold */
+.btn-primary {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+  box-shadow: var(--shadow-gold);
+  border-color: transparent;
+  font-weight: 800;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #FFB81C, #E09800);
+  color: #0A1628;
+  box-shadow: 0 15px 50px rgba(240,165,0,0.5);
+  transform: translateY(-2px);
+}
+
+/* Secondary → outlined navy */
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* White button keep */
+.btn-white {
+  background: #fff;
+  color: #0A1628;
+  font-weight: 800;
+}
+
+.btn-white:hover {
+  background: #F8FAFC;
+  color: #0A1628;
+  transform: translateY(-2px);
+}
+
+/* Gold button (already gold, slightly richer) */
+.btn-gold {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+  font-weight: 800;
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #FFB81C, #E09800);
+  color: #0A1628;
+  box-shadow: 0 15px 50px rgba(240,165,0,0.5);
+}
+
+/* ============================================================
+   HERO — deeper navy, larger type, tighter form
+   ============================================================ */
+.hero-section {
+  background: #0A1628;
+}
+
+.hero-bg-gradient {
+  background: linear-gradient(
+    125deg,
+    rgba(10,22,40,0.97) 0%,
+    rgba(0,64,94,0.85) 45%,
+    rgba(0,119,182,0.35) 100%
+  );
+}
+
+/* Subtle radial glow behind the headline */
+.hero-left::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 70%;
+  height: 140%;
+  background: radial-gradient(ellipse, rgba(0,150,199,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-left { position: relative; }
+
+.hero-title {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 1.0;
+  color: #fff;
+}
+
+.hero-title .highlight {
+  background: linear-gradient(135deg, #F0A500, #FFD166);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.8;
+  max-width: 52ch;
+}
+
+.hero-badge {
+  background: rgba(240,165,0,0.15);
+  border-color: rgba(240,165,0,0.35);
+  color: #F0A500;
+}
+
+.hero-stat-number {
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+/* Form card — premium glass */
+.hero-form-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 48px 44px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06),
+              0 32px 100px rgba(0,0,0,0.2),
+              0 8px 24px rgba(0,0,0,0.08);
+}
+
+.hero-form-title {
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #0A1628;
+}
+
+/* Submit button in form — gold */
+.form-submit-btn {
+  background: linear-gradient(135deg, #F0A500, #CC8A00) !important;
+  color: #0A1628 !important;
+  box-shadow: var(--shadow-gold);
+  font-weight: 800;
+}
+
+.form-submit-btn:hover {
+  background: linear-gradient(135deg, #FFB81C, #E09800) !important;
+  transform: translateY(-2px);
+}
+
+/* Wave separator color — matches trust bar */
+.hero-wave path { fill: #fff; }
+
+/* ============================================================
+   TRUST BAR — dark strip with icon pills
+   ============================================================ */
+.trust-bar {
+  background: #0A1628;
+  padding: 20px 0;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+.trust-item {
+  color: rgba(255,255,255,0.88);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border-right-color: rgba(255,255,255,0.1);
+  padding: 6px 28px;
+  gap: 10px;
+}
+
+.trust-item .trust-icon {
+  background: rgba(240,165,0,0.18);
+  color: #F0A500;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.section-badge {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  font-weight: 800;
+  padding: 7px 18px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  margin-bottom: 18px;
+  line-height: 1.07;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 4px;
+  margin-top: 16px;
+  background: linear-gradient(90deg, #F0A500, #FFD166);
+  border-radius: 2px;
+}
+
+.section-header.center .section-title::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: #5A6A7A;
+  line-height: 1.8;
+  max-width: 58ch;
+}
+
+.section-header { margin-bottom: 64px; }
+
+/* ============================================================
+   SERVICES SECTION — clean white, strong cards
+   ============================================================ */
+.services-section {
+  background: #fff;
+}
+
+.service-card {
+  background: #fff;
+  border: 1px solid #EDF2F7;
+  border-radius: 18px;
+  padding: 44px 36px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Colored accent line at top per card */
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  transform: scaleX(1);
+  transition: height 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 20px 60px rgba(0,0,0,0.1);
+  border-color: transparent;
+}
+
+.service-card:hover::before { height: 5px; }
+
+.service-icon-wrap {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+
+.service-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: #0A1628;
+}
+
+.service-description {
+  font-size: 0.9rem;
+  color: #5A6A7A;
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+
+.service-features {
+  gap: 9px;
+  margin-bottom: 24px;
+}
+
+.service-feature {
+  font-size: 0.85rem;
+  color: #374151;
+  gap: 9px;
+  line-height: 1.5;
+}
+
+.service-feature::before {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  width: 18px;
+  height: 18px;
+  font-size: 0.65rem;
+}
+
+.service-link {
+  margin-top: auto;
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 0.875rem;
+}
+
+/* ============================================================
+   HOW IT WORKS — deep navy, angled top
+   ============================================================ */
+.how-section {
+  background: linear-gradient(160deg, #0A1628 0%, #0D2545 50%, #0A1628 100%);
+  position: relative;
+  clip-path: polygon(0 32px, 100% 0, 100% calc(100% - 32px), 0 100%);
+  padding-top: calc(var(--spacing-section) + 32px);
+  padding-bottom: calc(var(--spacing-section) + 32px);
+}
+
+.step-number {
+  width: 84px;
+  height: 84px;
+  background: rgba(240,165,0,0.15);
+  border: 2px solid rgba(240,165,0,0.4);
+  box-shadow: 0 0 0 8px rgba(240,165,0,0.06);
+  color: #F0A500;
+}
+
+.step-number i { color: #F0A500 !important; font-size: 1.8rem !important; }
+
+.step-title { color: #fff; font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; }
+.step-description { color: rgba(255,255,255,0.62); line-height: 1.75; font-size: 0.9rem; }
+
+.steps-grid::before {
+  background: linear-gradient(90deg, rgba(240,165,0,0.25), rgba(240,165,0,0.25));
+}
+
+.how-section .section-badge {
+  color: #F0A500;
+  border-color: rgba(240,165,0,0.3);
+  background: rgba(240,165,0,0.1);
+}
+
+.how-section .section-title { color: #fff; }
+.how-section .section-title::after { background: linear-gradient(90deg, #F0A500, #FFD166); }
+.how-section .section-subtitle { color: rgba(255,255,255,0.6); }
+
+/* CTA button inside how-section */
+.how-section .btn-primary {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+}
+
+/* ============================================================
+   WHY CHOOSE US — clean white, left-aligned header
+   ============================================================ */
+.why-section { background: #fff; }
+
+.why-feature {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid #EDF2F7;
+}
+
+.why-feature:last-child { border-bottom: none; }
+
+.why-feature-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: 14px;
+  background: rgba(240,165,0,0.1);
+  color: #F0A500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.25s ease;
+}
+
+.why-feature:hover .why-feature-icon {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+}
+
+.why-feature-title { font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 4px; }
+.why-feature-text  { font-size: 0.875rem; color: #5A6A7A; line-height: 1.7; }
+
+/* ============================================================
+   TESTIMONIALS — deep navy background
+   ============================================================ */
+.testimonials-section {
+  background: linear-gradient(160deg, #0A1628, #0D2545);
+  border-top: none;
+  border-bottom: none;
+}
+
+.testimonials-section .section-title { color: #fff; }
+.testimonials-section .section-badge {
+  color: #F0A500;
+  border-color: rgba(240,165,0,0.3);
+  background: rgba(240,165,0,0.1);
+}
+.testimonials-section .section-title::after { background: linear-gradient(90deg,#F0A500,#FFD166); }
+.testimonials-section .section-subtitle { color: rgba(255,255,255,0.6); }
+
+.testimonial-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 40px 36px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(240,165,0,0.3);
+  transform: translateY(-5px);
+}
+
+.testimonial-source { color: rgba(255,255,255,0.5); }
+.testimonial-quote  { color: #F0A500; opacity: 0.6; }
+.testimonial-stars  { color: #F0A500; }
+.testimonial-text   { color: rgba(255,255,255,0.82); font-style: italic; line-height: 1.85; }
+.testimonial-name   { color: #fff; font-weight: 800; }
+.testimonial-location { color: rgba(255,255,255,0.5); }
+.testimonial-service-tag {
+  background: rgba(240,165,0,0.18);
+  color: #F0A500;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 12px;
+}
+
+.testimonial-avatar {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+  font-weight: 900;
+}
+
+/* Review buttons on dark bg */
+.testimonials-section .btn-secondary {
+  border-color: rgba(255,255,255,0.3);
+  color: #fff;
+}
+.testimonials-section .btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* ============================================================
+   SERVICE AREAS — clean, simple
+   ============================================================ */
+.areas-section { background: #F8FAFC; }
+
+.area-item {
+  background: #fff;
+  border: 1px solid #EDF2F7;
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: all 0.2s ease;
+}
+
+.area-item:hover {
+  border-color: rgba(240,165,0,0.4);
+  background: rgba(240,165,0,0.04);
+  transform: translateX(3px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.area-icon { color: #F0A500 !important; }
+.area-name  { font-weight: 700; color: #0A1628; font-size: 0.9rem; }
+
+/* ============================================================
+   CTA SECTION — gold strip
+   ============================================================ */
+.cta-section {
+  background: linear-gradient(135deg, #0A1628 0%, #0D2545 100%);
+  position: relative;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(240,165,0,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-title { color: #fff; font-size: clamp(2rem,3.5vw,3rem); font-weight: 900; }
+.cta-description { color: rgba(255,255,255,0.72); }
+
+.cta-phone-number { color: #F0A500; letter-spacing: -0.03em; }
+.cta-phone-label  { color: rgba(255,255,255,0.55); }
+.cta-phone-icon   { background: rgba(240,165,0,0.15); color: #F0A500; }
+
+/* ============================================================
+   FAQ SECTION — clean white
+   ============================================================ */
+.faq-section { background: #fff; }
+
+.faq-item { border: 1px solid #EDF2F7; border-radius: 14px; box-shadow: none; }
+.faq-item.active { border-color: rgba(240,165,0,0.35); }
+
+.faq-question { font-size: 1rem; font-weight: 700; padding: 22px 28px; }
+.faq-question:hover { color: #F0A500; }
+
+.faq-icon {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+  width: 30px;
+  height: 30px;
+}
+
+.faq-answer-inner { padding: 4px 28px 24px; line-height: 1.85; color: #5A6A7A; }
+
+/* ============================================================
+   PAGE HERO — inner pages, angled bottom
+   ============================================================ */
+.page-hero {
+  background: linear-gradient(145deg, #0A1628 0%, #0D2545 60%, #005F92 100%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 40px), 0 100%);
+  padding-bottom: calc(80px + 40px);
+}
+
+.page-hero-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  color: #fff;
+}
+
+/* ============================================================
+   FOOTER — richer dark
+   ============================================================ */
+.site-footer { background: #060F1C; }
+.footer-top  { border-color: rgba(255,255,255,0.06); }
+
+.footer-links a:hover { color: #F0A500; }
+.footer-social a:hover { background: #F0A500; color: #0A1628; }
+.footer-contact-icon { color: #F0A500; }
+.footer-contact-value a:hover { color: #F0A500; }
+.footer-legal a:hover { color: #F0A500; }
+
+/* ============================================================
+   FLOATING CTA — gold call, navy quote
+   ============================================================ */
+.floating-btn-call {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628 !important;
+  font-weight: 800;
+}
+
+.floating-btn-quote {
+  background: linear-gradient(135deg, #005F92, #0077B6);
+  color: #fff !important;
+}
+
+/* ============================================================
+   BACK TO TOP — gold
+   ============================================================ */
+.back-to-top {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+}
+
+/* ============================================================
+   PRICING CARDS (if shown)
+   ============================================================ */
+.pricing-card.featured {
+  background: linear-gradient(145deg, #0A1628, #0D2545);
+}
+
+.pricing-badge {
+  background: linear-gradient(135deg, #F0A500, #CC8A00);
+  color: #0A1628;
+}
+
+/* ============================================================
+   SECTION PADDING
+   ============================================================ */
+:root { --spacing-section: 108px; }
+
+@media (max-width: 992px) {
+  :root { --spacing-section: 80px; }
+
+  .how-section {
+    clip-path: polygon(0 20px, 100% 0, 100% calc(100% - 20px), 0 100%);
+    padding-top: calc(var(--spacing-section) + 20px);
+    padding-bottom: calc(var(--spacing-section) + 20px);
+  }
+
+  .page-hero {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), 0 100%);
+    padding-bottom: calc(80px + 24px);
+  }
+}
+
+@media (max-width: 768px) {
+  :root { --spacing-section: 64px; }
+
+  .how-section {
+    clip-path: none;
+    padding-top: var(--spacing-section);
+    padding-bottom: var(--spacing-section);
+  }
+
+  .page-hero {
+    clip-path: none;
+    padding-bottom: 80px;
+  }
+
+  .hero-title { font-size: clamp(2.4rem, 8vw, 3.2rem); }
+
+  .hero-form-card { padding: 32px 24px; }
+
+  .trust-bar-inner { flex-wrap: wrap; }
+  .trust-item {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 20px;
+    width: 50%;
+  }
+
+  .trust-item:nth-child(even) { border-right: none; }
+
+  .service-card { padding: 36px 28px; }
+  .testimonial-card { padding: 32px 28px; }
+}
+
+@media (max-width: 480px) {
+  .trust-item { width: 100%; }
+}

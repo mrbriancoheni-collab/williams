@@ -100,6 +100,14 @@ function aquapro_scripts() {
 		$ver
 	);
 
+	// Premium visual overhaul (gold CTA, navy sections, angled separators)
+	wp_enqueue_style(
+		'aquapro-premium',
+		get_template_directory_uri() . '/assets/css/premium.css',
+		array( 'aquapro-design' ),
+		$ver
+	);
+
 	// Main JS
 	wp_enqueue_script(
 		'aquapro-main',
