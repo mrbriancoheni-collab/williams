@@ -477,128 +477,306 @@ add_action( 'phpmailer_init', function( $phpmailer ) {
 // SEO & SCHEMA
 // ============================================================
 
-function aquapro_head_seo() {
-	$phone       = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
-	$email       = get_theme_mod( 'aquapro_email', 'williamspoolcare@gmail.com' );
-	$address     = get_theme_mod( 'aquapro_address', '123 Pool Lane, Phoenix, AZ 85001' );
-	$city        = get_theme_mod( 'aquapro_city', 'Phoenix' );
-	$state       = get_theme_mod( 'aquapro_state', 'Arizona' );
-	$zip         = get_theme_mod( 'aquapro_zip', '85001' );
-	$founded     = get_theme_mod( 'aquapro_founded', '2009' );
-	$service_areas = get_theme_mod( 'aquapro_service_areas', 'Scottsdale, Tempe, Mesa, Chandler' );
-	$areas_arr   = array_map( 'trim', explode( ',', $service_areas ) );
+/**
+ * Generate a context-aware meta description for the current page.
+ */
+function aquapro_get_meta_description() {
+	$city    = get_theme_mod( 'aquapro_city', 'Fair Oaks' );
+	$state   = get_theme_mod( 'aquapro_state_abbr', 'CA' );
+	$phone   = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
+	$reviews = intval( get_theme_mod( 'aquapro_reviews', '500' ) );
 
-	// Open Graph tags
 	if ( is_front_page() ) {
-		echo '<meta property="og:type" content="website" />' . "\n";
-		echo '<meta property="og:site_name" content="' . esc_attr( get_bloginfo( 'name' ) ) . '" />' . "\n";
-		echo '<meta name="geo.region" content="US-' . esc_attr( get_theme_mod( 'aquapro_state_abbr', 'AZ' ) ) . '" />' . "\n";
-		echo '<meta name="geo.placename" content="' . esc_attr( $city ) . '" />' . "\n";
+		return sprintf(
+			'Professional pool cleaning &amp; maintenance in %s, %s. Weekly service, chemical balancing, equipment repair, green pool treatment. Licensed &amp; insured, %d+ 5-star reviews. Call %s.',
+			$city, $state, $reviews, $phone
+		);
 	}
 
-	// Local Business Schema (JSON-LD)
-	if ( is_front_page() || is_page() ) {
+	if ( is_singular( 'service' ) ) {
+		$excerpt = get_the_excerpt();
+		return $excerpt
+			? wp_strip_all_tags( $excerpt )
+			: sprintf( 'Professional %s in %s, %s. Licensed &amp; insured. Free estimates — call %s.', get_the_title(), $city, $state, $phone );
+	}
+
+	if ( is_singular( 'post' ) ) {
+		$excerpt = get_the_excerpt();
+		return $excerpt ? wp_strip_all_tags( $excerpt ) : get_bloginfo( 'description' );
+	}
+
+	if ( is_page_template( 'page-faq.php' ) || is_page( 'faq' ) ) {
+		return sprintf( 'Pool cleaning FAQ: water chemistry, equipment, pricing, and service answered by Williams Pool Care in %s, %s. Call %s.', $city, $state, $phone );
+	}
+
+	if ( is_page_template( 'page-testimonials.php' ) || is_page( 'testimonials' ) ) {
+		return sprintf( '%d+ 5-star Google reviews for Williams Pool Care in %s. Read what homeowners across the Sacramento area say about our pool service.', $reviews, $city );
+	}
+
+	if ( is_page( 'about' ) ) {
+		return sprintf( 'Meet the Williams Pool Care team. Serving %s and Sacramento-area homeowners since 2006 with licensed, insured pool cleaning and maintenance.', $city );
+	}
+
+	if ( is_page( 'contact' ) ) {
+		return sprintf( 'Contact Williams Pool Care in %s, %s. Get a free pool cleaning quote — we respond within 2 business hours. Call %s or use our online form.', $city, $state, $phone );
+	}
+
+	if ( is_page( 'services' ) ) {
+		return sprintf( 'Pool cleaning, chemical balancing, equipment repair, and green pool treatment in %s, %s. View all services and transparent pricing.', $city, $state );
+	}
+
+	if ( is_page_template( 'template-location.php' ) ) {
+		$loc_city = get_post_meta( get_the_ID(), '_aquapro_location_city', true );
+		$locs     = function_exists( 'aquapro_get_locations' ) ? aquapro_get_locations() : array();
+		$loc_name = isset( $locs[ $loc_city ]['name'] ) ? $locs[ $loc_city ]['name'] : get_the_title();
+		return sprintf( 'Pool cleaning service in %s, %s. Licensed technicians, weekly &amp; bi-weekly plans, green pool treatment, and equipment repair. Free estimates.', $loc_name, $state );
+	}
+
+	if ( is_page_template( 'template-location-service.php' ) ) {
+		return wp_strip_all_tags( get_the_excerpt() ?: get_the_title() . ' — professional pool service in the Sacramento area. Licensed, insured, free estimates.' );
+	}
+
+	if ( is_home() ) {
+		return sprintf( 'Pool care tips, chemistry guides, and maintenance advice from Williams Pool Care in %s, %s.', $city, $state );
+	}
+
+	return get_bloginfo( 'description' );
+}
+
+/**
+ * Generate the Open Graph title for the current page.
+ */
+function aquapro_get_og_title() {
+	$site = get_bloginfo( 'name' );
+	if ( is_front_page() ) {
+		return $site . ' | Pool Cleaning &amp; Maintenance in ' . get_theme_mod( 'aquapro_city', 'Fair Oaks' );
+	}
+	if ( is_singular() ) {
+		return get_the_title() . ' | ' . $site;
+	}
+	if ( is_home() ) {
+		return 'Pool Care Tips &amp; Guides | ' . $site;
+	}
+	return wp_get_document_title();
+}
+
+/**
+ * Generate BreadcrumbList schema for the current page.
+ */
+function aquapro_get_breadcrumb_schema() {
+	$items = array(
+		array(
+			'@type'    => 'ListItem',
+			'position' => 1,
+			'name'     => 'Home',
+			'item'     => home_url( '/' ),
+		),
+	);
+
+	if ( is_singular( 'service' ) ) {
+		$items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Services', 'item' => home_url( '/services/' ) );
+		$items[] = array( '@type' => 'ListItem', 'position' => 3, 'name' => get_the_title(), 'item' => get_permalink() );
+	} elseif ( is_singular( 'post' ) ) {
+		$items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Blog', 'item' => home_url( '/blog/' ) );
+		$items[] = array( '@type' => 'ListItem', 'position' => 3, 'name' => get_the_title(), 'item' => get_permalink() );
+	} elseif ( is_page() ) {
+		$parent = wp_get_post_parent_id( get_the_ID() );
+		if ( $parent ) {
+			$items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => get_the_title( $parent ), 'item' => get_permalink( $parent ) );
+			$items[] = array( '@type' => 'ListItem', 'position' => 3, 'name' => get_the_title(), 'item' => get_permalink() );
+		} else {
+			$items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => get_the_title(), 'item' => get_permalink() );
+		}
+	}
+
+	if ( count( $items ) < 2 ) {
+		return null;
+	}
+
+	return array(
+		'@context'        => 'https://schema.org',
+		'@type'           => 'BreadcrumbList',
+		'itemListElement' => $items,
+	);
+}
+
+function aquapro_head_seo() {
+	$phone         = get_theme_mod( 'aquapro_phone', '(916) 532-5561' );
+	$email         = get_theme_mod( 'aquapro_email', 'williamspoolcare@gmail.com' );
+	$city          = get_theme_mod( 'aquapro_city', 'Fair Oaks' );
+	$state         = get_theme_mod( 'aquapro_state', 'California' );
+	$state_abbr    = get_theme_mod( 'aquapro_state_abbr', 'CA' );
+	$zip           = get_theme_mod( 'aquapro_zip', '95628' );
+	$founded       = get_theme_mod( 'aquapro_founded', '2006' );
+	$service_areas = get_theme_mod( 'aquapro_service_areas', 'Fair Oaks, Sacramento, Roseville, Folsom, Citrus Heights' );
+	$areas_arr     = array_map( 'trim', explode( ',', $service_areas ) );
+	$review_count  = intval( get_theme_mod( 'aquapro_reviews', '500' ) );
+	$og_image      = get_theme_mod( 'aquapro_hero_image', '' )
+		? wp_get_attachment_image_url( get_theme_mod( 'aquapro_hero_image', '' ), 'large' )
+		: get_template_directory_uri() . '/assets/images/og-image.jpg';
+
+	// ---- Canonical URL ----
+	$canonical = '';
+	if ( is_front_page() )          { $canonical = home_url( '/' ); }
+	elseif ( is_singular() )        { $canonical = get_permalink(); }
+	elseif ( is_home() )            { $canonical = get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/blog/' ); }
+	elseif ( is_tax() || is_category() || is_tag() ) {
+		$term = get_queried_object();
+		$canonical = $term ? get_term_link( $term ) : '';
+	}
+	if ( $canonical && ! is_wp_error( $canonical ) ) {
+		echo '<link rel="canonical" href="' . esc_url( $canonical ) . '" />' . "\n";
+	}
+
+	// ---- Meta Description ----
+	$meta_desc = aquapro_get_meta_description();
+	echo '<meta name="description" content="' . esc_attr( $meta_desc ) . '" />' . "\n";
+
+	// ---- GEO tags (all pages) ----
+	echo '<meta name="geo.region" content="US-' . esc_attr( $state_abbr ) . '" />' . "\n";
+	echo '<meta name="geo.placename" content="' . esc_attr( $city ) . ', ' . esc_attr( $state ) . '" />' . "\n";
+
+	// ---- Open Graph (all pages) ----
+	$og_title = aquapro_get_og_title();
+	$og_type  = is_singular( 'post' ) ? 'article' : 'website';
+	if ( is_singular() && has_post_thumbnail() ) {
+		$thumb = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+		if ( $thumb ) { $og_image = $thumb; }
+	}
+	echo '<meta property="og:type"        content="' . esc_attr( $og_type ) . '" />' . "\n";
+	echo '<meta property="og:site_name"   content="' . esc_attr( get_bloginfo( 'name' ) ) . '" />' . "\n";
+	echo '<meta property="og:title"       content="' . esc_attr( $og_title ) . '" />' . "\n";
+	echo '<meta property="og:description" content="' . esc_attr( $meta_desc ) . '" />' . "\n";
+	echo '<meta property="og:image"       content="' . esc_url( $og_image ) . '" />' . "\n";
+	if ( $canonical && ! is_wp_error( $canonical ) ) {
+		echo '<meta property="og:url" content="' . esc_url( $canonical ) . '" />' . "\n";
+	}
+
+	// ---- Twitter / X Card (all pages) ----
+	echo '<meta name="twitter:card"        content="summary_large_image" />' . "\n";
+	echo '<meta name="twitter:title"       content="' . esc_attr( $og_title ) . '" />' . "\n";
+	echo '<meta name="twitter:description" content="' . esc_attr( $meta_desc ) . '" />' . "\n";
+	echo '<meta name="twitter:image"       content="' . esc_url( $og_image ) . '" />' . "\n";
+
+	// ---- LocalBusiness + WebSite schema (front page only) ----
+	if ( is_front_page() ) {
 		$schema = array(
-			'@context'            => 'https://schema.org',
-			'@type'               => array( 'LocalBusiness', 'HomeAndConstructionBusiness' ),
-			'@id'                 => get_site_url() . '/#business',
-			'name'                => get_bloginfo( 'name' ),
-			'description'         => get_bloginfo( 'description' ),
-			'url'                 => get_site_url(),
-			'telephone'           => $phone,
-			'email'               => $email,
-			'foundingDate'        => $founded,
-			'priceRange'          => '$$',
-			'currenciesAccepted'  => 'USD',
-			'paymentAccepted'     => 'Cash, Credit Card, Check, Zelle, Venmo',
-			'openingHours'        => array( 'Mo-Fr 07:00-18:00', 'Sa 08:00-16:00' ),
-			'address'             => array(
+			'@context'           => 'https://schema.org',
+			'@type'              => array( 'LocalBusiness', 'HomeAndConstructionBusiness' ),
+			'@id'                => get_site_url() . '/#business',
+			'name'               => get_bloginfo( 'name' ),
+			'description'        => get_bloginfo( 'description' ),
+			'url'                => get_site_url(),
+			'telephone'          => $phone,
+			'email'              => $email,
+			'foundingDate'       => $founded,
+			'priceRange'         => '$$',
+			'currenciesAccepted' => 'USD',
+			'paymentAccepted'    => 'Cash, Credit Card, Check, Zelle, Venmo',
+			'openingHoursSpecification' => array(
+				array( '@type' => 'OpeningHoursSpecification', 'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ), 'opens' => '07:00', 'closes' => '18:00' ),
+				array( '@type' => 'OpeningHoursSpecification', 'dayOfWeek' => 'Saturday', 'opens' => '08:00', 'closes' => '16:00' ),
+			),
+			'address' => array(
 				'@type'           => 'PostalAddress',
-				'streetAddress'   => get_theme_mod( 'aquapro_street', '123 Pool Lane' ),
+				'streetAddress'   => get_theme_mod( 'aquapro_street', '' ),
 				'addressLocality' => $city,
-				'addressRegion'   => get_theme_mod( 'aquapro_state_abbr', 'AZ' ),
+				'addressRegion'   => $state_abbr,
 				'postalCode'      => $zip,
 				'addressCountry'  => 'US',
 			),
-			'areaServed'          => array_map( function( $area ) use ( $state ) {
-				return array(
-					'@type' => 'City',
-					'name'  => trim( $area ),
-					'containedInPlace' => array(
-						'@type' => 'State',
-						'name'  => $state,
-					),
-				);
+			'areaServed' => array_map( function( $area ) use ( $state ) {
+				return array( '@type' => 'City', 'name' => trim( $area ), 'containedInPlace' => array( '@type' => 'State', 'name' => $state ) );
 			}, $areas_arr ),
-			'serviceType'         => array(
+			'serviceType' => array(
 				'Pool Cleaning', 'Pool Maintenance', 'Pool Chemical Balancing',
-				'Pool Equipment Repair', 'Pool Opening', 'Pool Closing',
-				'Green Pool Recovery', 'Filter Cleaning', 'Pool Inspection',
+				'Pool Equipment Repair', 'Green Pool Recovery', 'Filter Cleaning',
+				'Pool Inspection', 'New Pool Start-Up',
 			),
-			'hasOfferCatalog'     => array(
+			'hasOfferCatalog' => array(
 				'@type' => 'OfferCatalog',
 				'name'  => 'Pool Cleaning Services',
 				'itemListElement' => array(
-					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Weekly Pool Cleaning' ) ),
-					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Bi-Weekly Pool Cleaning' ) ),
-					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Green Pool Treatment' ) ),
-					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Pool Equipment Repair' ) ),
-					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Filter Cleaning' ) ),
+					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Weekly Pool Cleaning', 'description' => 'Weekly pool cleaning including skimming, brushing, vacuuming, and chemical balancing.' ) ),
+					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Bi-Weekly Pool Cleaning', 'description' => 'Pool cleaning every two weeks for lower-use pools.' ) ),
+					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Green Pool Treatment', 'description' => 'Algae remediation and shock treatment — pool restored within 24–72 hours.' ) ),
+					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Pool Equipment Repair', 'description' => 'Repair and replacement of pumps, motors, filters, heaters, and salt cells.' ) ),
+					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Chemical Balancing', 'description' => 'Professional water chemistry testing and balancing: pH, chlorine, alkalinity, calcium hardness.' ) ),
+					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'Filter Cleaning', 'description' => 'Deep cleaning for cartridge, sand, and DE filters to restore full filtration efficiency.' ) ),
+					array( '@type' => 'Offer', 'itemOffered' => array( '@type' => 'Service', 'name' => 'New Pool Start-Up', 'description' => 'Startup chemical treatment and equipment commissioning for new pools.' ) ),
 				),
 			),
-			'sameAs' => array_filter( array(
+			'sameAs' => array_values( array_filter( array(
 				get_theme_mod( 'aquapro_facebook', '' ),
 				get_theme_mod( 'aquapro_instagram', '' ),
 				get_theme_mod( 'aquapro_yelp', '' ),
 				get_theme_mod( 'aquapro_google', '' ),
-			) ),
-			'aggregateRating'     => array(
+				get_theme_mod( 'aquapro_nextdoor', '' ),
+			) ) ),
+			'aggregateRating' => array(
 				'@type'       => 'AggregateRating',
 				'ratingValue' => '4.9',
-				'reviewCount' => get_theme_mod( 'aquapro_reviews', '500' ),
+				'reviewCount' => $review_count,
 				'bestRating'  => '5',
 				'worstRating' => '1',
 			),
-			'image'               => array(
+			'image' => array(
 				'@type' => 'ImageObject',
-				'url'   => get_template_directory_uri() . '/assets/images/og-image.jpg',
+				'url'   => $og_image,
 			),
 		);
 
-		echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT ) . '</script>' . "\n";
+		echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
+
+		// WebSite schema with SearchAction (enables Google sitelinks search box)
+		$website_schema = array(
+			'@context' => 'https://schema.org',
+			'@type'    => 'WebSite',
+			'@id'      => get_site_url() . '/#website',
+			'url'      => get_site_url(),
+			'name'     => get_bloginfo( 'name' ),
+			'potentialAction' => array(
+				'@type'       => 'SearchAction',
+				'target'      => array( '@type' => 'EntryPoint', 'urlTemplate' => get_site_url() . '/?s={search_term_string}' ),
+				'query-input' => 'required name=search_term_string',
+			),
+		);
+		echo '<script type="application/ld+json">' . wp_json_encode( $website_schema, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 	}
 
-	// Service Schema for service pages
+	// ---- BreadcrumbList schema (all non-homepage) ----
+	if ( ! is_front_page() ) {
+		$breadcrumb_schema = aquapro_get_breadcrumb_schema();
+		if ( $breadcrumb_schema ) {
+			echo '<script type="application/ld+json">' . wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
+		}
+	}
+
+	// ---- Service schema (service CPT pages) ----
 	if ( is_singular( 'service' ) ) {
 		$service_schema = array(
 			'@context'    => 'https://schema.org',
 			'@type'       => 'Service',
 			'name'        => get_the_title(),
-			'description' => get_the_excerpt(),
-			'provider'    => array(
-				'@id' => get_site_url() . '/#business',
-			),
-			'areaServed'  => array(
-				'@type' => 'State',
-				'name'  => $state,
-			),
+			'description' => wp_strip_all_tags( get_the_excerpt() ),
+			'provider'    => array( '@id' => get_site_url() . '/#business' ),
+			'areaServed'  => array( '@type' => 'State', 'name' => $state ),
+			'url'         => get_permalink(),
 		);
-
 		echo '<script type="application/ld+json">' . wp_json_encode( $service_schema, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 	}
 
-	// FAQ Schema for FAQ page
+	// ---- FAQPage schema ----
 	if ( is_page_template( 'page-faq.php' ) || is_page( 'faq' ) ) {
 		$faq_schema = array(
 			'@context'   => 'https://schema.org',
 			'@type'      => 'FAQPage',
 			'mainEntity' => aquapro_get_faq_schema(),
 		);
-
 		echo '<script type="application/ld+json">' . wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 	}
 
-	// Analytics
+	// ---- Analytics ----
 	$ga4 = get_theme_mod( 'aquapro_ga4', '' );
 	if ( $ga4 ) : ?>
 		<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $ga4 ); ?>"></script>
