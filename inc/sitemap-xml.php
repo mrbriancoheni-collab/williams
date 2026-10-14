@@ -93,15 +93,32 @@ foreach ( $services as $service ) {
 // ---- Location pages (pool-service-{city}) ----
 if ( function_exists( 'aquapro_get_locations' ) ) {
 	foreach ( array_keys( aquapro_get_locations() ) as $city_slug ) {
-		$loc_url = home_url( '/pool-service-' . $city_slug . '/' );
+		$loc_url  = home_url( '/pool-service-' . $city_slug . '/' );
 		$loc_page = get_page_by_path( 'pool-service-' . $city_slug );
-		$mod = $loc_page ? get_the_modified_date( 'Y-m-d', $loc_page->ID ) : $today;
+		$mod      = $loc_page ? get_the_modified_date( 'Y-m-d', $loc_page->ID ) : $today;
 		echo '<url>' . "\n";
 		echo '  <loc>' . esc_url( $loc_url ) . '</loc>' . "\n";
 		echo '  <lastmod>' . esc_html( $mod ) . '</lastmod>' . "\n";
 		echo '  <changefreq>monthly</changefreq>' . "\n";
 		echo '  <priority>0.7</priority>' . "\n";
 		echo '</url>' . "\n";
+	}
+}
+
+// ---- City + service child pages (pool-service-{city}/{service-slug}) ----
+if ( function_exists( 'aquapro_get_locations' ) && function_exists( 'aquapro_get_services' ) ) {
+	foreach ( array_keys( aquapro_get_locations() ) as $city_slug ) {
+		foreach ( array_keys( aquapro_get_services() ) as $svc_slug ) {
+			$child_path = 'pool-service-' . $city_slug . '/' . $svc_slug;
+			$child_page = get_page_by_path( $child_path );
+			$mod        = $child_page ? get_the_modified_date( 'Y-m-d', $child_page->ID ) : $today;
+			echo '<url>' . "\n";
+			echo '  <loc>' . esc_url( home_url( '/' . $child_path . '/' ) ) . '</loc>' . "\n";
+			echo '  <lastmod>' . esc_html( $mod ) . '</lastmod>' . "\n";
+			echo '  <changefreq>monthly</changefreq>' . "\n";
+			echo '  <priority>0.75</priority>' . "\n";
+			echo '</url>' . "\n";
+		}
 	}
 }
 

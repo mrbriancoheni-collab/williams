@@ -356,6 +356,7 @@ function aquapro_customize_register( $wp_customize ) {
 	) );
 
 	$seo_fields = array(
+		'aquapro_street'       => array( __( 'Street Address', 'aquapro' ), '' ),
 		'aquapro_city'         => array( __( 'Primary City', 'aquapro' ), 'Phoenix' ),
 		'aquapro_state'        => array( __( 'State', 'aquapro' ), 'Arizona' ),
 		'aquapro_state_abbr'   => array( __( 'State Abbreviation', 'aquapro' ), 'AZ' ),
