@@ -19,6 +19,14 @@ $service_slug = get_post_meta( get_the_ID(), '_aquapro_location_service', true )
 $location     = $city_slug    ? aquapro_get_location( $city_slug )    : null;
 $service      = $service_slug ? aquapro_get_service( $service_slug )  : null;
 
+// Fallback: dynamic routing via rewrite rule (no WP page required)
+if ( ( ! $location || ! $service ) && ! empty( $GLOBALS['aquapro_dynamic_city'] ) ) {
+	$city_slug    = $GLOBALS['aquapro_dynamic_city'];
+	$service_slug = $GLOBALS['aquapro_dynamic_service'];
+	$location     = aquapro_get_location( $city_slug );
+	$service      = $service_slug ? aquapro_get_service( $service_slug ) : null;
+}
+
 if ( ! $location || ! $service ) {
 	get_header();
 	echo '<div class="container" style="padding:120px 0;text-align:center;"><h1>Location service page not configured.</h1></div>';

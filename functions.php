@@ -1045,12 +1045,97 @@ add_action( 'wp_ajax_nopriv_aquapro_quote', 'aquapro_handle_quote_form' );
 add_action( 'init', function() {
 	add_rewrite_rule( 'sitemap\.xml$', 'index.php?aquapro_sitemap=1', 'top' );
 	add_rewrite_tag( '%aquapro_sitemap%', '([^&]+)' );
+	// Dynamic location pages — city+service must be listed before city-only so both are reachable
+	add_rewrite_rule( 'pool-service-([a-z0-9-]+)/([a-z0-9-]+)/?$', 'index.php?aquapro_location=$matches[1]&aquapro_location_service=$matches[2]', 'top' );
+	add_rewrite_rule( 'pool-service-([a-z0-9-]+)/?$', 'index.php?aquapro_location=$matches[1]', 'top' );
+	add_rewrite_tag( '%aquapro_location%', '([a-z0-9-]+)' );
+	add_rewrite_tag( '%aquapro_location_service%', '([a-z0-9-]+)' );
 } );
 
 add_action( 'template_redirect', function() {
 	if ( get_query_var( 'aquapro_sitemap' ) ) {
 		require get_template_directory() . '/inc/sitemap-xml.php';
 		exit;
+	}
+
+	$uri = strtok( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ), '?' );
+
+	// /index.html → homepage
+	if ( '/index.html' === $uri ) {
+		wp_safe_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+
+	// Legacy service slug 301s — old URLs that were crawled before services were standardised
+	static $legacy_slugs = array(
+		'weekly-pool-cleaning' => 'pool-cleaning',
+		'chemical-balancing'   => 'water-chemistry',
+		'equipment-repair'     => 'pool-equipment-repair',
+		'green-pool-treatment' => 'green-pool-recovery',
+		'filter-cleaning'      => '',
+		'bi-weekly-cleaning'   => '',
+		'pool-startup'         => '',
+	);
+	if ( preg_match( '#^/services/([a-z0-9-]+)/?$#', $uri, $m ) && array_key_exists( $m[1], $legacy_slugs ) ) {
+		$new_slug = $legacy_slugs[ $m[1] ];
+		wp_safe_redirect( $new_slug ? home_url( '/services/' . $new_slug . '/' ) : home_url( '/services/' ), 301 );
+		exit;
+	}
+
+	// Dynamic location pages — serves city and city+service templates without WP pages
+	$city = get_query_var( 'aquapro_location' );
+	if ( $city ) {
+		require_once get_template_directory() . '/inc/location-data.php';
+		$all_locs = aquapro_get_locations();
+		if ( ! isset( $all_locs[ $city ] ) ) return;
+
+		$service = get_query_var( 'aquapro_location_service' );
+
+		global $wp_query;
+		$wp_query->is_404 = false;
+		status_header( 200 );
+
+		$GLOBALS['aquapro_dynamic_city']    = $city;
+		$GLOBALS['aquapro_dynamic_service'] = $service;
+
+		if ( $service ) {
+			require get_template_directory() . '/template-location-service.php';
+		} else {
+			require get_template_directory() . '/template-location.php';
+		}
+		exit;
+	}
+} );
+
+// ============================================================
+// AUTO-CREATE REQUIRED PAGES ON FIRST ADMIN VISIT
+// ============================================================
+
+add_action( 'admin_init', function() {
+	// Pages that must exist — created silently if missing, never overwritten
+	$required_pages = array(
+		'service-areas'    => array( 'Service Areas',    'page-service-areas.php' ),
+		'testimonials'     => array( 'Testimonials',     'page-testimonials.php' ),
+		'faq'              => array( 'FAQ',               'page-faq.php' ),
+		'privacy-policy'   => array( 'Privacy Policy',   'page-privacy-policy.php' ),
+		'terms-of-service' => array( 'Terms of Service', 'page-terms-of-service.php' ),
+	);
+	foreach ( $required_pages as $slug => $page_data ) {
+		if ( get_page_by_path( $slug ) ) continue;
+		$id = wp_insert_post( array(
+			'post_title'  => $page_data[0],
+			'post_name'   => $slug,
+			'post_status' => 'publish',
+			'post_type'   => 'page',
+		) );
+		if ( $id && ! is_wp_error( $id ) ) {
+			update_post_meta( $id, '_wp_page_template', $page_data[1] );
+		}
+	}
+	// Flush rewrite rules once so the new location rewrite rules take effect
+	if ( ! get_option( 'aquapro_rewrites_v3' ) ) {
+		flush_rewrite_rules( false );
+		update_option( 'aquapro_rewrites_v3', true );
 	}
 } );
 

@@ -26,6 +26,12 @@ if ( ! $location ) {
 	}
 }
 
+// Fallback: dynamic routing via rewrite rule (no WP page required)
+if ( ! $location && ! empty( $GLOBALS['aquapro_dynamic_city'] ) ) {
+	$city_slug = $GLOBALS['aquapro_dynamic_city'];
+	$location  = aquapro_get_location( $city_slug );
+}
+
 if ( ! $location ) {
 	// Bail gracefully
 	get_header();

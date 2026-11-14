@@ -186,6 +186,18 @@ function aquapro_get_services() {
 	);
 }
 
+/** Single location lookup. */
+function aquapro_get_location( $slug ) {
+	$locs = aquapro_get_locations();
+	return isset( $locs[ $slug ] ) ? $locs[ $slug ] : null;
+}
+
+/** Single service lookup. */
+function aquapro_get_service( $slug ) {
+	$svcs = aquapro_get_services();
+	return isset( $svcs[ $slug ] ) ? $svcs[ $slug ] : null;
+}
+
 /** URL for a city landing page. */
 function aquapro_location_url( $city_slug ) {
 	return home_url( '/pool-service-' . $city_slug . '/' );
